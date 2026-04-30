@@ -17,7 +17,7 @@
   --red:#8b1a1a;--red-light:#c0392b;
   --green:#2d6a2d;--green-light:#4a9e4a;
 }
-body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;padding-bottom:80px}
+body{background:var(--bg);color:var(--text);font-size:16px;line-height:1.5;font-family:'Rajdhani',sans-serif;min-height:100vh;padding-bottom:80px}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
@@ -25,11 +25,11 @@ body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;mi
 .nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
 .nav-logo{font-family:'Cinzel',serif;font-size:15px;color:var(--blue-light);letter-spacing:2px}
 .nav-links{display:flex;gap:2rem}
-.nav-links a{color:var(--text2);text-decoration:none;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;padding-bottom:2px}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:14px;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;padding-bottom:2px}
 .nav-links a:hover,.nav-links a.active{color:var(--blue-light);border-bottom:1px solid var(--blue)}
 
 .nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;background:var(--bg2);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
-.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text2);text-decoration:none;font-size:9px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
+.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text2);text-decoration:none;font-size:11px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
 .nav-mobile a.active,.nav-mobile a:hover{color:var(--blue-light)}
 .nav-icon{font-size:16px}
 
@@ -41,7 +41,7 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:10px;position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-active),transparent)}
-.card-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:12px}
+.card-title{font-family:'Cinzel',serif;font-size:13px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:14px}
 
 .progress-block{margin-bottom:1rem}
 .progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
