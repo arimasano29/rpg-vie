@@ -9,77 +9,98 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a26;
-  --border:#2a2a3a;--border-active:#4a7ab5;
-  --blue:#4a7ab5;--blue-light:#6a9fd8;
+  --border:#2a2a3a;--border-active:#9b1a1a;
+  --red:#9b1a1a;--red-light:#c0392b;--red-glow:#e74c3c;
   --xp:#7c4dff;--xp-light:#9c6fff;
   --bronze:#cd7f32;--silver:#c0c0c0;--gold:#ffd700;
   --text:#e8e8f0;--text2:#888899;
-  --red:#8b1a1a;
 }
-body{background:var(--bg);color:var(--text);font-size:16px;line-height:1.5;font-family:'Rajdhani',sans-serif;font-size:16px;min-height:100vh;padding-bottom:80px}
+body{background:var(--bg);color:var(--text);font-size:16px;line-height:1.5;font-family:'Rajdhani',sans-serif;min-height:100vh;padding-bottom:80px}
 h1,h2,h3{font-family:'Cinzel',serif}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
 
-.nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:54px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
-.nav-logo{font-family:'Cinzel',serif;font-size:16px;color:var(--blue-light);letter-spacing:2px}
+/* NAV */
+.nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:54px;background:rgba(10,10,15,0.95);border-bottom:1px solid #1a0a0a;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.nav-logo{font-family:'Cinzel',serif;font-size:16px;color:var(--red-glow);letter-spacing:2px}
 .nav-links{display:flex;gap:2rem}
 .nav-links a{color:var(--text2);text-decoration:none;font-size:14px;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;padding-bottom:2px}
-.nav-links a:hover,.nav-links a.active{color:var(--blue-light);border-bottom:1px solid var(--blue)}
+.nav-links a:hover,.nav-links a.active{color:var(--red-glow);border-bottom:1px solid var(--red)}
 
-.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:62px;background:var(--bg2);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
+.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:62px;background:rgba(10,10,15,0.95);border-top:1px solid #1a0a0a;z-index:100;justify-content:space-around;align-items:center;backdrop-filter:blur(8px)}
 .nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text2);text-decoration:none;font-size:11px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
-.nav-mobile a.active,.nav-mobile a:hover{color:var(--blue-light)}
+.nav-mobile a.active,.nav-mobile a:hover{color:var(--red-glow)}
 .nav-icon{font-size:18px}
 
-.hero{position:relative;width:100%;height:200px;overflow:hidden;border-bottom:1px solid var(--border);background:var(--bg2)}
-.hero img{width:100%;height:100%;object-fit:cover;opacity:0.55}
+/* HERO */
+.hero{position:relative;width:100%;height:200px;overflow:hidden;border-bottom:1px solid #1a0a0a;background:var(--bg)}
+.hero img{width:100%;height:100%;object-fit:cover;opacity:0.5}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 20%,var(--bg) 100%)}
 
+/* SYMBOLES LATÉRAUX */
+.side-symbols{display:none}
+@media(min-width:1200px){
+  .side-symbols{display:block;position:fixed;top:0;bottom:0;width:140px;pointer-events:none;z-index:10}
+  .side-left{left:0}
+  .side-right{right:0}
+  .sym{position:absolute;width:120px;height:120px;opacity:0.18;mix-blend-mode:screen;transition:opacity 0.3s}
+  .sym:hover{opacity:0.35}
+  .sym img{width:100%;height:100%;object-fit:contain}
+  .sym-1{top:15%;left:10px}
+  .sym-2{top:55%;left:10px}
+  .sym-3{top:15%;right:10px}
+  .sym-4{top:55%;right:10px}
+}
+
+/* MAIN */
 main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 
-.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:10px;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-active),transparent)}
+/* CARDS */
+.card{background:rgba(18,18,26,0.85);border:1px solid #1a0a0a;border-radius:8px;padding:1.25rem;margin-bottom:10px;position:relative;overflow:hidden;backdrop-filter:blur(4px)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent)}
 .card-title{font-family:'Cinzel',serif;font-size:13px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:14px}
 
+/* PERSO */
 .perso-grid{display:grid;grid-template-columns:115px 1fr;gap:1.25rem;align-items:start}
-.avatar-frame{width:110px;height:160px;border:1px solid var(--border-active);border-radius:4px;background:var(--bg3);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
-.avatar-frame::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 20px rgba(74,122,181,0.25)}
-.rank-badge{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:4px 6px;font-size:11px;letter-spacing:1px;color:var(--text2);text-align:center;margin-top:6px;width:110px}
-
+.avatar-frame{width:110px;height:160px;border:1px solid var(--red);border-radius:4px;background:var(--bg3);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.avatar-frame::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 20px rgba(155,26,26,0.3)}
 .perso-name{font-family:'Cinzel',serif;font-size:22px;color:var(--text);letter-spacing:1px;margin-bottom:2px}
 .perso-title{font-size:13px;color:var(--text2);letter-spacing:0.5px;margin-bottom:12px}
 
-.level-block{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:12px}
+.rank-inline{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.rank-img-small{width:28px;height:28px;object-fit:contain}
+.rank-name-text{font-size:14px;color:var(--red-glow);letter-spacing:0.5px}
+
+/* LEVEL */
+.level-block{background:rgba(26,10,10,0.6);border:1px solid #1a0a0a;border-radius:6px;padding:10px 14px;margin-bottom:12px}
 .level-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .level-label{font-size:11px;color:var(--text2);letter-spacing:1px;text-transform:uppercase}
 .level-num{font-family:'Cinzel',serif;font-size:18px;color:var(--gold)}
-.bar-track{height:5px;background:var(--bg);border-radius:99px;overflow:hidden}
+.bar-track{height:5px;background:rgba(0,0,0,0.4);border-radius:99px;overflow:hidden}
 .bar-xp{height:100%;border-radius:99px;background:var(--xp);transition:width 0.6s}
-.bar-blue{height:100%;border-radius:99px;background:var(--blue);transition:width 0.6s}
+.bar-red{height:100%;border-radius:99px;background:var(--red-glow);transition:width 0.6s;box-shadow:0 0 6px rgba(231,76,60,0.4)}
 .level-bottom{display:flex;justify-content:space-between;margin-top:4px;font-size:13px;color:var(--text2)}
 
-.rank-inline{display:flex;align-items:center;gap:6px;margin-bottom:10px}
-.rank-img-small{width:28px;height:28px;object-fit:contain}
-.rank-name-text{font-size:14px;color:var(--blue-light);letter-spacing:0.5px}
-
+/* STATS */
 .stat-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
 .stat-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0}
 .stat-name{font-size:13px;color:var(--text2);width:85px;flex-shrink:0;letter-spacing:0.5px;text-transform:uppercase}
 .stat-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-top:3px}
-.stat-title-text{font-size:10px;color:var(--blue-light);font-style:italic}
+.stat-title-text{font-size:10px;color:var(--red-glow);font-style:italic}
 
+/* MONNAIE */
 .currency-row{display:flex;gap:8px}
-.currency-item{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 14px;display:flex;align-items:center;gap:8px;flex:1}
+.currency-item{background:rgba(18,18,26,0.7);border:1px solid #1a0a0a;border-radius:6px;padding:8px 14px;display:flex;align-items:center;gap:8px;flex:1}
 .currency-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
 .currency-val{font-family:'Cinzel',serif;font-size:16px}
 .currency-label{font-size:11px;color:var(--text2);letter-spacing:1px;text-transform:uppercase}
 
+/* QUICK LINKS */
 .quick-links{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.quick-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;text-decoration:none;display:block;transition:border-color 0.2s;position:relative;overflow:hidden}
-.quick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-active),transparent);opacity:0;transition:opacity 0.2s}
-.quick-card:hover{border-color:var(--border-active)}
+.quick-card{background:rgba(18,18,26,0.85);border:1px solid #1a0a0a;border-radius:8px;padding:14px;text-decoration:none;display:block;transition:border-color 0.2s;position:relative;overflow:hidden;backdrop-filter:blur(4px)}
+.quick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent);opacity:0;transition:opacity 0.2s}
+.quick-card:hover{border-color:var(--red)}
 .quick-card:hover::before{opacity:1}
 .quick-card-title{font-family:'Cinzel',serif;font-size:14px;margin-bottom:4px}
 .quick-card-sub{font-size:13px;color:var(--text2)}
@@ -91,7 +112,6 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
   .nav-mobile{display:flex}
   .perso-grid{grid-template-columns:90px 1fr;gap:1rem}
   .avatar-frame{width:85px;height:125px}
-  .rank-badge{width:85px}
   .currency-row{gap:6px}
   .currency-item{padding:6px 10px}
   .quick-links{grid-template-columns:1fr 1fr}
@@ -99,6 +119,18 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 </style>
 </head>
 <body>
+
+<!-- SYMBOLES GAUCHE -->
+<div class="side-symbols side-left">
+  <div class="sym sym-1"><img src="symbols/symbol1.jpg" alt=""></div>
+  <div class="sym sym-2"><img src="symbols/symbol2.jpg" alt=""></div>
+</div>
+
+<!-- SYMBOLES DROITE -->
+<div class="side-symbols side-right">
+  <div class="sym sym-3"><img src="symbols/symbol3.jpg" alt=""></div>
+  <div class="sym sym-4"><img src="symbols/symbol4.jpg" alt=""></div>
+</div>
 
 <nav class="nav-desktop">
   <span class="nav-logo">⚔ RPG DE VIE</span>
@@ -126,16 +158,13 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
         <img src="avatar.png" alt="avatar" style="width:100%;height:100%;object-fit:cover;object-position:top;">
       </div>
     </div>
-
     <div>
       <div class="perso-name">Théo</div>
       <div class="perso-title" id="perso-title">Novice en éveil</div>
-
       <div class="rank-inline">
         <img class="rank-img-small" id="rank-img" src="" alt="" onerror="this.style.display='none'">
         <span class="rank-name-text" id="rank-name-inline">Fer IV</span>
       </div>
-
       <div class="level-block">
         <div class="level-top">
           <span class="level-label">Niveau général</span>
@@ -147,7 +176,6 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
           <span id="gen-xp-next">100 XP → niv.2</span>
         </div>
       </div>
-
       <div id="stats-list"></div>
     </div>
   </div>
@@ -174,7 +202,7 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 
 <div class="quick-links">
   <a href="tracker.html" class="quick-card">
-    <div class="quick-card-title" style="color:var(--blue-light)">⚔ Quêtes du jour</div>
+    <div class="quick-card-title" style="color:var(--red-glow)">⚔ Quêtes du jour</div>
     <div class="quick-card-sub">Coche tes habitudes et gagne de l'XP</div>
   </a>
   <a href="quetes.html" class="quick-card">
@@ -212,41 +240,16 @@ const HABITS=[
 ];
 const STATS=[{id:"Force",icon:"💪"},{id:"Vitalité",icon:"🌿"},{id:"Discipline",icon:"⚡"},{id:"Intelligence",icon:"🧠"},{id:"Mental",icon:"🧘"}];
 const XP_TABLE=[100,100,100,100,100,100,100,100,100,200,200,200,200,200,200,200,200,200,200,350,350,350,350,350,350,350,350,350,350,500,500,500,500,500,500,500,500,500,500,750,750,750,750,750,750,750,750,750,750,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000];
-
 const RANKS=[
-  {n:"Fer IV",m:1,img:"ranks/iron.png"},
-  {n:"Fer III",m:3,img:"ranks/iron.png"},
-  {n:"Fer II",m:5,img:"ranks/iron.png"},
-  {n:"Fer I",m:7,img:"ranks/iron.png"},
-  {n:"Bronze IV",m:9,img:"ranks/bronze.png"},
-  {n:"Bronze III",m:11,img:"ranks/bronze.png"},
-  {n:"Bronze II",m:13,img:"ranks/bronze.png"},
-  {n:"Bronze I",m:15,img:"ranks/bronze.png"},
-  {n:"Argent IV",m:17,img:"ranks/silver.png"},
-  {n:"Argent III",m:19,img:"ranks/silver.png"},
-  {n:"Argent II",m:21,img:"ranks/silver.png"},
-  {n:"Argent I",m:23,img:"ranks/silver.png"},
-  {n:"Or IV",m:25,img:"ranks/gold.png"},
-  {n:"Or III",m:27,img:"ranks/gold.png"},
-  {n:"Or II",m:29,img:"ranks/gold.png"},
-  {n:"Or I",m:31,img:"ranks/gold.png"},
-  {n:"Platine IV",m:33,img:"ranks/platinum.png"},
-  {n:"Platine III",m:35,img:"ranks/platinum.png"},
-  {n:"Platine II",m:37,img:"ranks/platinum.png"},
-  {n:"Platine I",m:39,img:"ranks/platinum.png"},
-  {n:"Diamant IV",m:41,img:"ranks/diamond.png"},
-  {n:"Diamant III",m:43,img:"ranks/diamond.png"},
-  {n:"Diamant II",m:45,img:"ranks/diamond.png"},
-  {n:"Diamant I",m:47,img:"ranks/diamond.png"},
-  {n:"Émeraude IV",m:49,img:"ranks/emerald.png"},
-  {n:"Émeraude III",m:51,img:"ranks/emerald.png"},
-  {n:"Émeraude II",m:53,img:"ranks/emerald.png"},
-  {n:"Émeraude I",m:55,img:"ranks/emerald.png"},
-  {n:"Maître",m:57,img:"ranks/master.png"},
-  {n:"Grand Maître",m:71,img:"ranks/grandmaster.png"},
-  {n:"Challenger",m:86,img:"ranks/challenger.png"},
+  {n:"Fer IV",m:1,img:"ranks/iron.png"},{n:"Fer III",m:3,img:"ranks/iron.png"},{n:"Fer II",m:5,img:"ranks/iron.png"},{n:"Fer I",m:7,img:"ranks/iron.png"},
+  {n:"Bronze IV",m:9,img:"ranks/bronze.png"},{n:"Bronze III",m:11,img:"ranks/bronze.png"},{n:"Bronze II",m:13,img:"ranks/bronze.png"},{n:"Bronze I",m:15,img:"ranks/bronze.png"},
+  {n:"Argent IV",m:17,img:"ranks/silver.png"},{n:"Argent III",m:19,img:"ranks/silver.png"},{n:"Argent II",m:21,img:"ranks/silver.png"},{n:"Argent I",m:23,img:"ranks/silver.png"},
+  {n:"Or IV",m:25,img:"ranks/gold.png"},{n:"Or III",m:27,img:"ranks/gold.png"},{n:"Or II",m:29,img:"ranks/gold.png"},{n:"Or I",m:31,img:"ranks/gold.png"},
+  {n:"Platine IV",m:33,img:"ranks/platinum.png"},{n:"Platine III",m:35,img:"ranks/platinum.png"},{n:"Platine II",m:37,img:"ranks/platinum.png"},{n:"Platine I",m:39,img:"ranks/platinum.png"},
+  {n:"Diamant IV",m:41,img:"ranks/diamond.png"},{n:"Diamant III",m:43,img:"ranks/diamond.png"},{n:"Diamant II",m:45,img:"ranks/diamond.png"},{n:"Diamant I",m:47,img:"ranks/diamond.png"},
+  {n:"Émeraude IV",m:49,img:"ranks/emerald.png"},{n:"Émeraude III",m:51,img:"ranks/emerald.png"},{n:"Émeraude II",m:53,img:"ranks/emerald.png"},{n:"Émeraude I",m:55,img:"ranks/emerald.png"},
+  {n:"Maître",m:57,img:"ranks/master.png"},{n:"Grand Maître",m:71,img:"ranks/grandmaster.png"},{n:"Challenger",m:86,img:"ranks/challenger.png"},
 ];
-
 const STAT_TITLES={
   Force:["Novice","Apprenti","Guerrier","Combattant","Champion","Berserker","Titan","Légende","Demi-dieu","Invincible"],
   Vitalité:["Fragile","Résistant","Robuste","Endurant","Vital","Inébranlable","Immortel","Titan","Ancestral","Éternel"],
@@ -254,14 +257,11 @@ const STAT_TITLES={
   Intelligence:["Curieux","Étudiant","Érudit","Savant","Expert","Maître","Génie","Oracle","Prophète","Omniscient"],
   Mental:["Fragile","Équilibré","Serein","Résolu","Inébranlable","Maître de soi","Ascète","Sage","Éveillé","Transcendant"],
 };
-
 const TITLES=["Novice en éveil","Apprenti du destin","Porteur d'espoir","Marcheur des ombres","Gardien de l'aube","Briseur de chaînes","Lame du serment","Élu des étoiles","Maître de soi","Challenger éternel"];
 
 function getKey(){const d=new Date();return'habits_'+d.getFullYear()+'_'+d.getMonth()+'_'+d.getDate();}
 function loadChecked(){try{const d=localStorage.getItem(getKey());return d?new Set(JSON.parse(d)):new Set();}catch(e){return new Set();}}
-
 function getTotalXP(stat,checked){let x=0;HABITS.forEach(h=>{if(h.stat===stat&&checked.has(h.id))x+=h.xp;});return Math.max(0,x);}
-
 function getLevelInfo(xp){
   let rem=xp,lvl=1;
   for(let i=0;i<XP_TABLE.length&&rem>=XP_TABLE[i];i++){rem-=XP_TABLE[i];lvl=i+2;}
@@ -271,7 +271,6 @@ function getLevelInfo(xp){
   const pct=Math.min(100,Math.round((current/needed)*100));
   return{lvl,current,needed,pct,rem};
 }
-
 function getRank(lvl){let r=RANKS[0];for(let x of RANKS){if(lvl>=x.m)r=x;}return r;}
 function getTitle(lvl){return TITLES[Math.min(Math.floor((lvl-1)/10),TITLES.length-1)];}
 function getStatTitle(stat,lvl){const arr=STAT_TITLES[stat]||[];return arr[Math.min(Math.floor((lvl-1)/10),arr.length-1)]||'';}
@@ -283,7 +282,6 @@ function render(){
   const avgXP=Math.round(totalXP/STATS.length);
   const gen=getLevelInfo(avgXP);
   const rank=getRank(gen.lvl);
-
   document.getElementById('gen-level').textContent=gen.lvl;
   document.getElementById('gen-bar').style.width=gen.pct+'%';
   document.getElementById('gen-xp').textContent=avgXP+' XP';
@@ -292,7 +290,6 @@ function render(){
   document.getElementById('rank-img').src=rank.img;
   document.getElementById('rank-name-inline').textContent=rank.n;
   document.getElementById('perso-title').textContent=getTitle(gen.lvl);
-
   const list=document.getElementById('stats-list');
   list.innerHTML='';
   STATS.forEach(s=>{
@@ -305,7 +302,7 @@ function render(){
       <span class="stat-icon">${s.icon}</span>
       <span class="stat-name">${s.id}</span>
       <div style="flex:1">
-        <div class="bar-track"><div class="bar-blue" style="width:${info.pct}%"></div></div>
+        <div class="bar-track"><div class="bar-red" style="width:${info.pct}%"></div></div>
         <div class="stat-meta">
           <span>Niv.${info.lvl} <span class="stat-title-text">${statTitle}</span></span>
           <span style="color:var(--xp-light)">${xp} XP · ${info.rem} rest.</span>
@@ -313,13 +310,11 @@ function render(){
       </div>`;
     list.appendChild(row);
   });
-
   const bronze=parseInt(localStorage.getItem('total_bronze')||'0');
   document.getElementById('gold-val').textContent=Math.floor(bronze/10000);
   document.getElementById('silver-val').textContent=Math.floor((bronze%10000)/100);
   document.getElementById('bronze-val').textContent=bronze%100;
 }
-
 render();
 setInterval(render,3000);
 </script>
