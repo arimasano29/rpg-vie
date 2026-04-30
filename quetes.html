@@ -9,28 +9,31 @@
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a26;
-  --border:#2a2a3a;--border-active:#4a7ab5;
-  --blue:#4a7ab5;--blue-light:#6a9fd8;
+  --border:#2a2a3a;--border-active:#9b1a1a;
+  --red:#9b1a1a;--red-light:#c0392b;--red-glow:#e74c3c;
   --xp:#7c4dff;--xp-light:#9c6fff;
   --bronze:#cd7f32;--silver:#c0c0c0;--gold:#ffd700;
   --text:#e8e8f0;--text2:#888899;
   --green:#2d6a2d;--green-light:#4a9e4a;
   --red:#8b1a1a;--red-light:#c0392b;
 }
-body{background:var(--bg);color:var(--text);font-size:16px;line-height:1.5;font-family:'Rajdhani',sans-serif;min-height:100vh;padding-bottom:80px}
+body{background:var(--bg);color:var(--text);font-size:16px;line-height:1.5;font-family:'Rajdhani',sans-serif;font-weight:500;min-height:100vh;padding-bottom:80px}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--bg)}
-::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
 
-.nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
-.nav-logo{font-family:'Cinzel',serif;font-size:15px;color:var(--blue-light);letter-spacing:2px}
+/* FOND FLOUTÉ */
+body::before{content:'';position:fixed;inset:0;background:url('bg3.jpg') center/cover no-repeat;filter:blur(18px) brightness(0.18);z-index:-1;transform:scale(1.05)}
+
+.nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;background:rgba(10,10,15,0.95);border-bottom:1px solid #1a0a0a;position:sticky;backdrop-filter:blur(8px);top:0;z-index:100}
+.nav-logo{font-family:'Cinzel',serif;font-size:15px;color:var(--red-glow);letter-spacing:2px}
 .nav-links{display:flex;gap:2rem}
 .nav-links a{color:var(--text2);text-decoration:none;font-size:14px;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;padding-bottom:2px}
-.nav-links a:hover,.nav-links a.active{color:var(--blue-light);border-bottom:1px solid var(--blue)}
+.nav-links a:hover,.nav-links a.active{color:var(--red-glow);border-bottom:1px solid var(--red)}
 
-.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;background:var(--bg2);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
+.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;background:rgba(10,10,15,0.95);border-top:1px solid #1a0a0a;z-index:100;backdrop-filter:blur(8px);justify-content:space-around;align-items:center}
 .nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text2);text-decoration:none;font-size:11px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
-.nav-mobile a.active,.nav-mobile a:hover{color:var(--blue-light)}
+.nav-mobile a.active,.nav-mobile a:hover{color:var(--red-glow)}
 .nav-icon{font-size:16px}
 
 main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
@@ -42,7 +45,7 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 .section-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin:1.25rem 0 10px;display:flex;align-items:center;gap:8px}
 .section-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
-.quest-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.1rem 1.25rem;margin-bottom:8px;position:relative;overflow:hidden;transition:border-color 0.2s}
+.quest-card{background:rgba(18,18,26,0.85);border:1px solid #1a0a0a;border-radius:8px;padding:1.1rem 1.25rem;backdrop-filter:blur(4px);margin-bottom:8px;position:relative;overflow:hidden;transition:border-color 0.2s}
 .quest-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-active),transparent);opacity:0;transition:opacity 0.2s}
 .quest-card:hover{border-color:var(--border-active)}
 .quest-card:hover::before{opacity:1}
@@ -54,7 +57,7 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 .quest-card.completed .quest-name{color:var(--green-light)}
 .quest-badges{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
 .badge{font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:3px;border:1px solid}
-.badge-stat{border-color:var(--blue);color:var(--blue-light);background:rgba(74,122,181,0.1)}
+.badge-stat{border-color:var(--red);color:var(--red-glow);background:rgba(155,26,26,0.1)}
 .badge-short{border-color:var(--red-light);color:var(--red-light);background:rgba(192,57,43,0.1)}
 .badge-mid{border-color:var(--bronze);color:var(--bronze);background:rgba(205,127,50,0.1)}
 .badge-long{border-color:var(--xp);color:var(--xp-light);background:rgba(124,77,255,0.1)}
@@ -63,7 +66,7 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 .quest-desc{font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5}
 
 .bar-track{height:5px;background:var(--bg);border-radius:99px;overflow:hidden}
-.bar-fill-blue{height:100%;border-radius:99px;background:var(--blue);transition:width 0.6s}
+.bar-fill-blue{height:100%;border-radius:99px;background:var(--red-glow);transition:width 0.6s}
 .bar-fill-green{height:100%;border-radius:99px;background:var(--green-light);transition:width 0.6s}
 .bar-fill-xp{height:100%;border-radius:99px;background:var(--xp);transition:width 0.6s}
 
@@ -72,7 +75,7 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 .quest-pct{font-family:'Cinzel',serif;font-size:12px}
 
 .add-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:8px 16px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:border-color 0.2s,color 0.2s;text-transform:uppercase;width:100%;margin-top:4px}
-.add-btn:hover{border-color:var(--border-active);color:var(--blue-light)}
+.add-btn:hover{border-color:var(--border-active);color:var(--red-glow)}
 
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:300;align-items:center;justify-content:center;padding:1rem}
 .modal-overlay.open{display:flex}
@@ -86,7 +89,7 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 .form-select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:13px;outline:none;appearance:none;cursor:pointer}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .modal-actions{display:flex;gap:8px;margin-top:1.25rem}
-.btn-primary{flex:1;background:var(--blue);border:none;border-radius:6px;padding:9px;color:white;font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:opacity 0.2s}
+.btn-primary{flex:1;background:var(--red-glow);border:none;border-radius:6px;padding:9px;color:white;font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:opacity 0.2s}
 .btn-primary:hover{opacity:0.85}
 .btn-cancel{flex:1;background:none;border:1px solid var(--border);border-radius:6px;padding:9px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:border-color 0.2s}
 .btn-cancel:hover{border-color:var(--red-light)}
@@ -112,6 +115,7 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
     <a href="quetes.html" class="active">Quêtes</a>
     <a href="shop.html">Forgeron</a>
     <a href="rangs.html">Rangs</a>
+    <a href="journal.html">Journal</a>
   </div>
 </nav>
 
@@ -183,6 +187,7 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
   <a href="quetes.html" class="active"><span class="nav-icon">🎯</span>Objectifs</a>
   <a href="shop.html"><span class="nav-icon">🛒</span>Shop</a>
   <a href="rangs.html"><span class="nav-icon">👑</span>Rangs</a>
+  <a href="journal.html"><span class="nav-icon">📖</span>Journal</a>
 </nav>
 
 <script>
@@ -275,6 +280,12 @@ function toggleComplete(id){
   if(q.completed&&q.reward>0){
     const b=parseInt(localStorage.getItem('total_bronze')||'0');
     localStorage.setItem('total_bronze',b+q.reward);
+    // Journal logging
+    try{
+      const entries=JSON.parse(localStorage.getItem('journal_entries')||'[]');
+      entries.push({id:Date.now().toString(),type:'quest',title:'Quête accomplie : '+q.name,detail:q.desc,bronze:q.reward,ts:Date.now()});
+      localStorage.setItem('journal_entries',JSON.stringify(entries));
+    }catch(e){}
   } else if(!q.completed&&q.reward>0){
     const b=parseInt(localStorage.getItem('total_bronze')||'0');
     localStorage.setItem('total_bronze',Math.max(0,b-q.reward));
