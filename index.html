@@ -38,20 +38,8 @@ h1,h2,h3{font-family:'Cinzel',serif}
 .hero img{width:100%;height:100%;object-fit:cover;opacity:0.5}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 20%,var(--bg) 100%)}
 
-/* SYMBOLES LATÉRAUX */
-.side-symbols{display:none}
-@media(min-width:1200px){
-  .side-symbols{display:block;position:fixed;top:0;bottom:0;width:140px;pointer-events:none;z-index:10}
-  .side-left{left:0}
-  .side-right{right:0}
-  .sym{position:absolute;width:120px;height:120px;opacity:0.18;mix-blend-mode:screen;transition:opacity 0.3s}
-  .sym:hover{opacity:0.35}
-  .sym img{width:100%;height:100%;object-fit:contain}
-  .sym-1{top:15%;left:10px}
-  .sym-2{top:55%;left:10px}
-  .sym-3{top:15%;right:10px}
-  .sym-4{top:55%;right:10px}
-}
+/* FOND FLOUTÉ */
+body::before{content:'';position:fixed;inset:0;background:url('bg.jpg') center/cover no-repeat;filter:blur(18px) brightness(0.18);z-index:-1;transform:scale(1.05)}
 
 /* MAIN */
 main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
@@ -120,17 +108,6 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 </head>
 <body>
 
-<!-- SYMBOLES GAUCHE -->
-<div class="side-symbols side-left">
-  <div class="sym sym-1"><img src="symbols/symbol1.jpg" alt=""></div>
-  <div class="sym sym-2"><img src="symbols/symbol2.jpg" alt=""></div>
-</div>
-
-<!-- SYMBOLES DROITE -->
-<div class="side-symbols side-right">
-  <div class="sym sym-3"><img src="symbols/symbol3.jpg" alt=""></div>
-  <div class="sym sym-4"><img src="symbols/symbol4.jpg" alt=""></div>
-</div>
 
 <nav class="nav-desktop">
   <span class="nav-logo">⚔ RPG DE VIE</span>
