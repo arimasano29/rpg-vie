@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quêtes — RPG de Vie</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a26;
+  --border:#2a2a3a;--border-active:#4a7ab5;
+  --blue:#4a7ab5;--blue-light:#6a9fd8;
+  --xp:#7c4dff;--xp-light:#9c6fff;
+  --bronze:#cd7f32;--silver:#c0c0c0;--gold:#ffd700;
+  --text:#e8e8f0;--text2:#888899;
+  --green:#2d6a2d;--green-light:#4a9e4a;
+  --red:#8b1a1a;--red-light:#c0392b;
+}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;padding-bottom:80px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
+
+.nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Cinzel',serif;font-size:15px;color:var(--blue-light);letter-spacing:2px}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;padding-bottom:2px}
+.nav-links a:hover,.nav-links a.active{color:var(--blue-light);border-bottom:1px solid var(--blue)}
+
+.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;background:var(--bg2);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
+.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text2);text-decoration:none;font-size:9px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
+.nav-mobile a.active,.nav-mobile a:hover{color:var(--blue-light)}
+.nav-icon{font-size:16px}
+
+main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
+
+.page-header{margin-bottom:1.25rem}
+.page-title{font-family:'Cinzel',serif;font-size:18px;color:var(--text);letter-spacing:1px;margin-bottom:4px}
+.page-sub{font-size:12px;color:var(--text2);letter-spacing:0.5px}
+
+.section-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin:1.25rem 0 10px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.quest-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.1rem 1.25rem;margin-bottom:8px;position:relative;overflow:hidden;transition:border-color 0.2s}
+.quest-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-active),transparent);opacity:0;transition:opacity 0.2s}
+.quest-card:hover{border-color:var(--border-active)}
+.quest-card:hover::before{opacity:1}
+.quest-card.completed{border-color:var(--green-light);background:#0d1a0d}
+.quest-card.completed::before{background:linear-gradient(90deg,transparent,var(--green-light),transparent);opacity:1}
+
+.quest-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;gap:10px}
+.quest-name{font-family:'Cinzel',serif;font-size:13px;color:var(--text);letter-spacing:0.5px;flex:1}
+.quest-card.completed .quest-name{color:var(--green-light)}
+.quest-badges{display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.badge{font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:3px;border:1px solid}
+.badge-stat{border-color:var(--blue);color:var(--blue-light);background:rgba(74,122,181,0.1)}
+.badge-short{border-color:var(--red-light);color:var(--red-light);background:rgba(192,57,43,0.1)}
+.badge-mid{border-color:var(--bronze);color:var(--bronze);background:rgba(205,127,50,0.1)}
+.badge-long{border-color:var(--xp);color:var(--xp-light);background:rgba(124,77,255,0.1)}
+.badge-done{border-color:var(--green-light);color:var(--green-light);background:rgba(74,158,74,0.1)}
+
+.quest-desc{font-size:12px;color:var(--text2);margin-bottom:10px;line-height:1.5}
+
+.bar-track{height:5px;background:var(--bg);border-radius:99px;overflow:hidden}
+.bar-fill-blue{height:100%;border-radius:99px;background:var(--blue);transition:width 0.6s}
+.bar-fill-green{height:100%;border-radius:99px;background:var(--green-light);transition:width 0.6s}
+.bar-fill-xp{height:100%;border-radius:99px;background:var(--xp);transition:width 0.6s}
+
+.quest-footer{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.quest-progress-text{font-size:10px;color:var(--text2)}
+.quest-pct{font-family:'Cinzel',serif;font-size:12px}
+
+.add-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:8px 16px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:border-color 0.2s,color 0.2s;text-transform:uppercase;width:100%;margin-top:4px}
+.add-btn:hover{border-color:var(--border-active);color:var(--blue-light)}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:300;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border-active);border-radius:10px;padding:1.5rem;width:100%;max-width:460px;position:relative}
+.modal::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue-light),transparent)}
+.modal-title{font-family:'Cinzel',serif;font-size:14px;letter-spacing:1px;margin-bottom:1.25rem;color:var(--text)}
+.form-group{margin-bottom:12px}
+.form-label{font-size:11px;letter-spacing:1px;color:var(--text2);text-transform:uppercase;margin-bottom:4px;display:block}
+.form-input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:13px;outline:none;transition:border-color 0.2s}
+.form-input:focus{border-color:var(--border-active)}
+.form-select{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:13px;outline:none;appearance:none;cursor:pointer}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-actions{display:flex;gap:8px;margin-top:1.25rem}
+.btn-primary{flex:1;background:var(--blue);border:none;border-radius:6px;padding:9px;color:white;font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:opacity 0.2s}
+.btn-primary:hover{opacity:0.85}
+.btn-cancel{flex:1;background:none;border:1px solid var(--border);border-radius:6px;padding:9px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:border-color 0.2s}
+.btn-cancel:hover{border-color:var(--red-light)}
+
+.complete-btn{background:none;border:1px solid var(--border);border-radius:4px;padding:3px 10px;font-size:10px;color:var(--text2);font-family:'Rajdhani',sans-serif;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all 0.2s}
+.complete-btn:hover{border-color:var(--green-light);color:var(--green-light)}
+.quest-card.completed .complete-btn{border-color:var(--red-light);color:var(--red-light)}
+
+@media(max-width:600px){
+  .nav-desktop{display:none}
+  .nav-mobile{display:flex}
+  .form-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav-desktop">
+  <span class="nav-logo">⚔ RPG DE VIE</span>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="tracker.html">Quêtes du jour</a>
+    <a href="quetes.html" class="active">Quêtes</a>
+    <a href="shop.html">Forgeron</a>
+    <a href="rangs.html">Rangs</a>
+  </div>
+</nav>
+
+<main>
+
+<div class="page-header">
+  <div class="page-title">🎯 Quêtes</div>
+  <div class="page-sub">Tes objectifs court, moyen et long terme</div>
+</div>
+
+<div id="quests-container"></div>
+
+<button class="add-btn" onclick="openModal()">+ Ajouter une quête</button>
+
+</main>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-title">Nouvelle quête</div>
+    <div class="form-group">
+      <label class="form-label">Nom de la quête</label>
+      <input class="form-input" id="q-name" placeholder="Ex: Obtenir ma licence...">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Description</label>
+      <input class="form-input" id="q-desc" placeholder="Ex: Réviser et valider tous les modules">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Échéance</label>
+        <select class="form-select" id="q-type">
+          <option value="short">Court terme</option>
+          <option value="mid">Moyen terme</option>
+          <option value="long">Long terme</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Stat liée</label>
+        <select class="form-select" id="q-stat">
+          <option value="Force">💪 Force</option>
+          <option value="Vitalité">🌿 Vitalité</option>
+          <option value="Discipline">⚡ Discipline</option>
+          <option value="Intelligence">🧠 Intelligence</option>
+          <option value="Mental">🧘 Mental</option>
+          <option value="Global">⚔ Global</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Objectif (niv. stat cible)</label>
+        <input class="form-input" id="q-target" type="number" placeholder="Ex: 10" min="1" max="100">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Récompense Bronze</label>
+        <input class="form-input" id="q-reward" type="number" placeholder="Ex: 500" min="0">
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn-primary" onclick="addQuest()">Créer la quête</button>
+    </div>
+  </div>
+</div>
+
+<nav class="nav-mobile">
+  <a href="index.html"><span class="nav-icon">🏠</span>Accueil</a>
+  <a href="tracker.html"><span class="nav-icon">⚔</span>Quêtes</a>
+  <a href="quetes.html" class="active"><span class="nav-icon">🎯</span>Objectifs</a>
+  <a href="shop.html"><span class="nav-icon">🛒</span>Shop</a>
+  <a href="rangs.html"><span class="nav-icon">👑</span>Rangs</a>
+</nav>
+
+<script>
+const XP_TABLE=[100,100,100,100,100,100,100,100,100,200,200,200,200,200,200,200,200,200,200,350,350,350,350,350,350,350,350,350,350,500,500,500,500,500,500,500,500,500,500,750,750,750,750,750,750,750,750,750,750,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000];
+const HABITS=[
+  {id:1,xp:80,stat:"Force"},{id:2,xp:50,stat:"Force"},
+  {id:3,xp:60,stat:"Vitalité"},{id:4,xp:30,stat:"Vitalité"},{id:5,xp:50,stat:"Vitalité"},
+  {id:6,xp:70,stat:"Discipline"},{id:7,xp:50,stat:"Discipline"},{id:8,xp:40,stat:"Discipline"},
+  {id:9,xp:60,stat:"Intelligence"},{id:10,xp:40,stat:"Intelligence"},{id:11,xp:30,stat:"Intelligence"},
+  {id:12,xp:60,stat:"Mental"},{id:13,xp:50,stat:"Mental"},{id:14,xp:30,stat:"Mental"},
+  {id:15,xp:-40,stat:"Discipline"},{id:16,xp:-40,stat:"Mental"},
+];
+const STATS=["Force","Vitalité","Discipline","Intelligence","Mental"];
+
+function getKey(){const d=new Date();return'habits_'+d.getFullYear()+'_'+d.getMonth()+'_'+d.getDate();}
+function loadChecked(){try{const d=localStorage.getItem(getKey());return d?new Set(JSON.parse(d)):new Set();}catch(e){return new Set();}}
+
+function getLevelFromXP(xp){
+  let rem=xp,lvl=1;
+  for(let i=0;i<XP_TABLE.length&&rem>=XP_TABLE[i];i++){rem-=XP_TABLE[i];lvl=i+2;}
+  return Math.min(lvl,100);
+}
+
+function getStatLevel(statName,checked){
+  let xp=0;
+  HABITS.forEach(h=>{if(h.stat===statName&&checked.has(h.id))xp+=h.xp;});
+  return getLevelFromXP(Math.max(0,xp));
+}
+
+function getGeneralLevel(checked){
+  let total=0;
+  STATS.forEach(s=>{
+    let xp=0;
+    HABITS.forEach(h=>{if(h.stat===s&&checked.has(h.id))xp+=h.xp;});
+    total+=Math.max(0,xp);
+  });
+  return getLevelFromXP(Math.round(total/STATS.length));
+}
+
+function loadQuests(){
+  try{const d=localStorage.getItem('quests');return d?JSON.parse(d):getDefaultQuests();}
+  catch(e){return getDefaultQuests();}
+}
+
+function saveQuests(q){try{localStorage.setItem('quests',JSON.stringify(q));}catch(e){}}
+
+function getDefaultQuests(){
+  return[
+    {id:1,name:"Progresser en muscu",desc:"Améliorer mon physique et ma force",type:"mid",stat:"Force",target:15,reward:1000,completed:false},
+    {id:2,name:"Avoir une alimentation propre et stable",desc:"Manger sain chaque jour sans exception",type:"short",stat:"Vitalité",target:5,reward:500,completed:false},
+    {id:3,name:"Arrêter le scroll TikTok",desc:"Eliminer le scroll passif et inutile",type:"short",stat:"Discipline",target:5,reward:500,completed:false},
+    {id:4,name:"Obtenir ma licence",desc:"Valider tous les modules de la Licence Pro ABF",type:"mid",stat:"Intelligence",target:10,reward:2000,completed:false},
+    {id:5,name:"Lire X livres cette année",desc:"Développer mes connaissances par la lecture",type:"long",stat:"Intelligence",target:20,reward:1500,completed:false},
+    {id:6,name:"Arrêter de me ronger les ongles",desc:"Briser cette mauvaise habitude définitivement",type:"short",stat:"Mental",target:5,reward:500,completed:false},
+    {id:7,name:"No Fap",desc:"Maîtrise de soi et discipline mentale",type:"short",stat:"Mental",target:5,reward:500,completed:false},
+    {id:8,name:"Construire une routine quotidienne solide",desc:"Avoir une routine stable et productive chaque jour",type:"mid",stat:"Discipline",target:10,reward:1000,completed:false},
+  ];
+}
+
+let quests=loadQuests();
+
+function openModal(){document.getElementById('modal-overlay').classList.add('open');}
+function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
+
+function addQuest(){
+  const name=document.getElementById('q-name').value.trim();
+  if(!name)return;
+  const q={
+    id:Date.now(),
+    name,
+    desc:document.getElementById('q-desc').value.trim(),
+    type:document.getElementById('q-type').value,
+    stat:document.getElementById('q-stat').value,
+    target:parseInt(document.getElementById('q-target').value)||10,
+    reward:parseInt(document.getElementById('q-reward').value)||500,
+    completed:false,
+  };
+  quests.push(q);
+  saveQuests(quests);
+  closeModal();
+  document.getElementById('q-name').value='';
+  document.getElementById('q-desc').value='';
+  render();
+}
+
+function toggleComplete(id){
+  const q=quests.find(x=>x.id===id);
+  if(!q)return;
+  q.completed=!q.completed;
+  if(q.completed&&q.reward>0){
+    const b=parseInt(localStorage.getItem('total_bronze')||'0');
+    localStorage.setItem('total_bronze',b+q.reward);
+  } else if(!q.completed&&q.reward>0){
+    const b=parseInt(localStorage.getItem('total_bronze')||'0');
+    localStorage.setItem('total_bronze',Math.max(0,b-q.reward));
+  }
+  saveQuests(quests);
+  render();
+}
+
+function deleteQuest(id){
+  if(!confirm('Supprimer cette quête ?'))return;
+  quests=quests.filter(x=>x.id!==id);
+  saveQuests(quests);
+  render();
+}
+
+function getProgress(q,checked){
+  if(q.completed)return{pct:100,current:q.target,label:'Accomplie !'};
+  let current=0;
+  if(q.stat==='Global'){
+    current=getGeneralLevel(checked);
+  } else {
+    current=getStatLevel(q.stat,checked);
+  }
+  const pct=Math.min(100,Math.round((current/q.target)*100));
+  return{pct,current,label:'Niv.'+current+' / Niv.'+q.target};
+}
+
+function render(){
+  const checked=loadChecked();
+  const container=document.getElementById('quests-container');
+  container.innerHTML='';
+
+  const types=[
+    {key:'short',label:'Court terme',color:'var(--red-light)'},
+    {key:'mid',label:'Moyen terme',color:'var(--bronze)'},
+    {key:'long',label:'Long terme',color:'var(--xp-light)'},
+  ];
+
+  types.forEach(t=>{
+    const list=quests.filter(q=>q.type===t.key);
+    if(list.length===0)return;
+
+    const section=document.createElement('div');
+    section.innerHTML=`<div class="section-title" style="color:${t.color}">${t.label}</div>`;
+
+    list.forEach(q=>{
+      const prog=getProgress(q,checked);
+      const barClass=q.completed?'bar-fill-green':t.key==='long'?'bar-fill-xp':'bar-fill-blue';
+      const card=document.createElement('div');
+      card.className='quest-card'+(q.completed?' completed':'');
+      card.innerHTML=`
+        <div class="quest-header">
+          <div class="quest-name">${q.name}</div>
+          <div class="quest-badges">
+            <span class="badge badge-stat">${q.stat}</span>
+            <span class="badge badge-${t.key}">${t.label}</span>
+            ${q.completed?'<span class="badge badge-done">Accomplie</span>':''}
+          </div>
+        </div>
+        ${q.desc?`<div class="quest-desc">${q.desc}</div>`:''}
+        <div class="bar-track"><div class="${barClass}" style="width:${prog.pct}%"></div></div>
+        <div class="quest-footer">
+          <span class="quest-progress-text">${prog.label} · Récompense : <span style="color:var(--bronze)">${q.reward} Bronze</span></span>
+          <div style="display:flex;gap:6px;align-items:center">
+            <span class="quest-pct" style="color:${q.completed?'var(--green-light)':'var(--text2)'}">${prog.pct}%</span>
+            <button class="complete-btn" onclick="toggleComplete(${q.id})">${q.completed?'Annuler':'Terminer'}</button>
+            <button class="complete-btn" style="border-color:var(--red);color:var(--red-light)" onclick="deleteQuest(${q.id})">✕</button>
+          </div>
+        </div>`;
+      section.appendChild(card);
+    });
+
+    container.appendChild(section);
+  });
+}
+
+render();
+document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+</script>
+</body>
+</html>
