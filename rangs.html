@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rangs — RPG de Vie</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a26;
+  --border:#2a2a3a;--border-active:#4a7ab5;
+  --blue:#4a7ab5;--blue-light:#6a9fd8;
+  --xp:#7c4dff;--xp-light:#9c6fff;
+  --bronze:#cd7f32;--silver:#c0c0c0;--gold:#ffd700;
+  --text:#e8e8f0;--text2:#888899;
+}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;padding-bottom:80px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
+
+.nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Cinzel',serif;font-size:15px;color:var(--blue-light);letter-spacing:2px}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;padding-bottom:2px}
+.nav-links a:hover,.nav-links a.active{color:var(--blue-light);border-bottom:1px solid var(--blue)}
+
+.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;background:var(--bg2);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
+.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text2);text-decoration:none;font-size:9px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
+.nav-mobile a.active,.nav-mobile a:hover{color:var(--blue-light)}
+.nav-icon{font-size:16px}
+
+main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
+
+.page-header{margin-bottom:1.5rem}
+.page-title{font-family:'Cinzel',serif;font-size:18px;color:var(--text);letter-spacing:1px;margin-bottom:4px}
+.page-sub{font-size:12px;color:var(--text2);letter-spacing:0.5px}
+
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:10px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-active),transparent)}
+
+.current-rank-card{background:var(--bg2);border:1px solid var(--border-active);border-radius:8px;padding:1.5rem;margin-bottom:1.25rem;position:relative;overflow:hidden;text-align:center}
+.current-rank-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue-light),transparent)}
+.current-label{font-size:11px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:8px}
+.current-rank-img{width:80px;height:80px;object-fit:contain;margin:0 auto 8px;display:block;filter:drop-shadow(0 0 12px rgba(74,122,181,0.4))}
+.current-rank-name{font-family:'Cinzel',serif;font-size:20px;letter-spacing:2px;margin-bottom:4px}
+.current-level{font-size:13px;color:var(--text2)}
+.bar-track{height:5px;background:var(--bg);border-radius:99px;overflow:hidden;margin-top:10px}
+.bar-fill{height:100%;border-radius:99px;background:var(--blue);transition:width 0.6s}
+.next-rank-hint{font-size:11px;color:var(--text2);margin-top:6px;letter-spacing:0.5px}
+
+.ranks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+
+.rank-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:1rem;text-align:center;position:relative;overflow:hidden;transition:border-color 0.2s}
+.rank-card.current{border-color:var(--border-active)}
+.rank-card.current::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue-light),transparent)}
+.rank-card.unlocked{opacity:1}
+.rank-card.locked{opacity:0.35}
+.rank-img{width:52px;height:52px;object-fit:contain;margin:0 auto 8px;display:block}
+.rank-card.current .rank-img{filter:drop-shadow(0 0 8px rgba(74,122,181,0.5))}
+.rank-name{font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;margin-bottom:3px}
+.rank-levels{font-size:10px;color:var(--text2);letter-spacing:0.5px}
+.rank-divisions{display:flex;flex-direction:column;gap:3px;margin-top:8px}
+.division-row{display:flex;justify-content:space-between;align-items:center;font-size:10px;padding:3px 6px;border-radius:4px;background:var(--bg2)}
+.division-name{color:var(--text2)}
+.division-level{color:var(--blue-light)}
+.division-check{color:var(--gold)}
+
+.section-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin:1.25rem 0 10px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.prestige-card{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:1rem;text-align:center;position:relative}
+.prestige-img{width:64px;height:64px;object-fit:contain;margin:0 auto 8px;display:block}
+.prestige-name{font-family:'Cinzel',serif;font-size:14px;letter-spacing:2px;margin-bottom:3px}
+.prestige-sub{font-size:11px;color:var(--text2)}
+
+@media(max-width:600px){
+  .nav-desktop{display:none}
+  .nav-mobile{display:flex}
+  .ranks-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav-desktop">
+  <span class="nav-logo">⚔ RPG DE VIE</span>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="tracker.html">Quêtes du jour</a>
+    <a href="quetes.html">Quêtes</a>
+    <a href="shop.html">Forgeron</a>
+    <a href="rangs.html" class="active">Rangs</a>
+  </div>
+</nav>
+
+<main>
+
+<div class="page-header">
+  <div class="page-title">👑 Tableau des rangs</div>
+  <div class="page-sub">Progresse chaque jour pour gravir les échelons</div>
+</div>
+
+<div class="current-rank-card" id="current-rank-card">
+  <div class="current-label">Rang actuel</div>
+  <img class="current-rank-img" id="current-rank-img" src="" alt="">
+  <div class="current-rank-name" id="current-rank-name" style="color:var(--blue-light)">Fer IV</div>
+  <div class="current-level" id="current-level">Niveau 1</div>
+  <div class="bar-track"><div class="bar-fill" id="current-bar" style="width:0%"></div></div>
+  <div class="next-rank-hint" id="next-rank-hint">Niveau 3 pour atteindre Fer III</div>
+</div>
+
+<div class="section-title">Rangs standards</div>
+<div class="ranks-grid" id="ranks-grid"></div>
+
+<div class="section-title">Rangs d'élite</div>
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px" id="elite-grid"></div>
+
+</main>
+
+<nav class="nav-mobile">
+  <a href="index.html"><span class="nav-icon">🏠</span>Accueil</a>
+  <a href="tracker.html"><span class="nav-icon">⚔</span>Quêtes</a>
+  <a href="quetes.html"><span class="nav-icon">🎯</span>Objectifs</a>
+  <a href="shop.html"><span class="nav-icon">🛒</span>Shop</a>
+  <a href="rangs.html" class="active"><span class="nav-icon">👑</span>Rangs</a>
+</nav>
+
+<script>
+const RANKS_DATA=[
+  {
+    name:"Fer",
+    color:"#8a8a8a",
+    img:"https://static.wikia.nocookie.net/leagueoflegends/images/e/e5/Season_2023_-_Iron.png/revision/latest?cb=20230116175207",
+    divisions:[
+      {name:"Fer IV",level:1},{name:"Fer III",level:3},{name:"Fer II",level:5},{name:"Fer I",level:7}
+    ],
+    elite:false
+  },
+  {
+    name:"Bronze",
+    color:"var(--bronze)",
+    img:"https://static.wikia.nocookie.net/leagueoflegends/images/e/e5/Season_2023_-_Bronze.png/revision/latest?cb=20230116175207",
+    divisions:[
+      {name:"Bronze IV",level:9},{name:"Bronze III",level:11},{name:"Bronze II",level:13},{name:"Bronze I",level:15}
+    ],
+    elite:false
+  },
+  {
+    name:"Argent",
+    color:"var(--silver)",
+    img:"https://static.wikia.nocookie.net/leagueoflegends/images/e/e5/Season_2023_-_Silver.png/revision/latest?cb=20230116175207",
+    divisions:[
+      {name:"Argent IV",level:17},{name:"Argent III",level:19},{name:"Argent II",level:21},{name:"Argent I",level:23}
+    ],
+    elite:false
+  },
+  {
+    name:"Or",
+    color:"var(--gold)",
+    img:"https://static.wikia.nocookie.net/leagueoflegends/images/e/e5/Season_2023_-_Gold.png/revision/latest?cb=20230116175207",
+    divisions:[
+      {name:"Or IV",level:25},{name:"Or III",level:27},{name:"Or II",level:29},{name:"Or I",level:31}
+    ],
+    elite:false
+  },
+  {
+    name:"Platine",
+    color:"#4dd0c4",
+    img:"https://static.wikia.nocookie.net/leagueoflegends/images/e/e5/Season_2023_-_Platinum.png/revision/latest?cb=20230116175207",
+    divisions:[
+      {name:"Platine IV",level:33},{name:"Platine III",level:35},{name:"Platine II",level:37},{name:"Platine I",level:39}
+    ],
+    elite:false
+  },
+  {
+    name:"Émeraude",
+    color:"#2ecc71",
+    img:"https://static.wikia.nocookie.net/leagueoflegends/images/e/e5/Season_2023_-_Emerald.png/revision/latest?cb=20230516175207",
+    divisions:[
+      {name:"Émeraude IV",level:41},{name:"Émeraude III",level:43},{name:"Émeraude II",level:45},{name:"Émeraude I",level:47}
+    ],
+    elite:false
+  },
+  {
+    name:"Diamant",
+    color:"#6ee2f5",
+    img:"https://static.wikia.nocookie.net/leagueoflegends/images/e/e5/Season_2023_-_Diamond.png/revision/latest?cb=20230116175207",
+    divisions:[
+      {name:"Diamant IV",level:49},{name:"Diamant III",level:51},{name:"Diamant II",level:53},{name:"Diamant I",level:55}
+    ],
+    elite:false
+  },
+];
+
+const ELITE_DATA=[
+  {
+    name:"Maître",
+    color:"#9b59b6",
+    img:"https://static.wikia.nocookie.net/leagueoflegends/images/e/e5/Season_2023_-_Master.png/revision/latest?cb=20230116175207",
+    levelRange:"57 — 70",
+    elite:true
+  },
+  {
+    name:"Grand Maître",
+    color:"#e74c3c",
+    img:"https://static.wikia.nocookie.net/leagueoflegends/images/e/e5/Season_2023_-_Grandmaster.png/revision/latest?cb=20230116175207",
+    levelRange:"71 — 85",
+    elite:true
+  },
+  {
+    name:"Challenger",
+    color:"var(--gold)",
+    img:"https://static.wikia.nocookie.net/leagueoflegends/images/e/e5/Season_2023_-_Challenger.png/revision/latest?cb=20230116175207",
+    levelRange:"86 — 100",
+    elite:true
+  },
+];
+
+const ALL_DIVISIONS=[
+  {name:"Fer IV",level:1},{name:"Fer III",level:3},{name:"Fer II",level:5},{name:"Fer I",level:7},
+  {name:"Bronze IV",level:9},{name:"Bronze III",level:11},{name:"Bronze II",level:13},{name:"Bronze I",level:15},
+  {name:"Argent IV",level:17},{name:"Argent III",level:19},{name:"Argent II",level:21},{name:"Argent I",level:23},
+  {name:"Or IV",level:25},{name:"Or III",level:27},{name:"Or II",level:29},{name:"Or I",level:31},
+  {name:"Platine IV",level:33},{name:"Platine III",level:35},{name:"Platine II",level:37},{name:"Platine I",level:39},
+  {name:"Émeraude IV",level:41},{name:"Émeraude III",level:43},{name:"Émeraude II",level:45},{name:"Émeraude I",level:47},
+  {name:"Diamant IV",level:49},{name:"Diamant III",level:51},{name:"Diamant II",level:53},{name:"Diamant I",level:55},
+  {name:"Maître",level:57},{name:"Grand Maître",level:71},{name:"Challenger",level:86},
+];
+
+const XP_TABLE=[100,100,100,100,100,100,100,100,100,200,200,200,200,200,200,200,200,200,200,350,350,350,350,350,350,350,350,350,350,500,500,500,500,500,500,500,500,500,500,750,750,750,750,750,750,750,750,750,750,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000];
+const HABITS=[
+  {id:1,xp:80,stat:"Force"},{id:2,xp:50,stat:"Force"},
+  {id:3,xp:60,stat:"Vitalité"},{id:4,xp:30,stat:"Vitalité"},{id:5,xp:50,stat:"Vitalité"},
+  {id:6,xp:70,stat:"Discipline"},{id:7,xp:50,stat:"Discipline"},{id:8,xp:40,stat:"Discipline"},
+  {id:9,xp:60,stat:"Intelligence"},{id:10,xp:40,stat:"Intelligence"},{id:11,xp:30,stat:"Intelligence"},
+  {id:12,xp:60,stat:"Mental"},{id:13,xp:50,stat:"Mental"},{id:14,xp:30,stat:"Mental"},
+  {id:15,xp:-40,stat:"Discipline"},{id:16,xp:-40,stat:"Mental"},
+];
+const STATS=["Force","Vitalité","Discipline","Intelligence","Mental"];
+
+function getKey(){const d=new Date();return'habits_'+d.getFullYear()+'_'+d.getMonth()+'_'+d.getDate();}
+function loadChecked(){try{const d=localStorage.getItem(getKey());return d?new Set(JSON.parse(d)):new Set();}catch(e){return new Set();}}
+
+function getLevelInfo(xp){
+  let rem=xp,lvl=1;
+  for(let i=0;i<XP_TABLE.length&&rem>=XP_TABLE[i];i++){rem-=XP_TABLE[i];lvl=i+2;}
+  lvl=Math.min(lvl,100);
+  const needed=XP_TABLE[Math.min(lvl-1,XP_TABLE.length-1)]||3000;
+  const current=needed-rem;
+  const pct=Math.min(100,Math.round((current/needed)*100));
+  return{lvl,current,needed,pct,rem};
+}
+
+function getCurrentRankData(lvl){
+  let current=ALL_DIVISIONS[0];
+  let next=ALL_DIVISIONS[1];
+  for(let i=0;i<ALL_DIVISIONS.length;i++){
+    if(lvl>=ALL_DIVISIONS[i].level){
+      current=ALL_DIVISIONS[i];
+      next=ALL_DIVISIONS[i+1]||null;
+    }
+  }
+  return{current,next};
+}
+
+function getRankImg(rankName){
+  const r=[...RANKS_DATA,...ELITE_DATA].find(x=>rankName.startsWith(x.name));
+  return r?r.img:'';
+}
+
+function render(){
+  const checked=loadChecked();
+  let totalXP=0;
+  STATS.forEach(s=>{
+    let xp=0;
+    HABITS.forEach(h=>{if(h.stat===s&&checked.has(h.id))xp+=h.xp;});
+    totalXP+=Math.max(0,xp);
+  });
+  const avgXP=Math.round(totalXP/STATS.length);
+  const info=getLevelInfo(avgXP);
+  const lvl=info.lvl;
+  const{current,next}=getCurrentRankData(lvl);
+
+  document.getElementById('current-rank-img').src=getRankImg(current.name);
+  document.getElementById('current-rank-name').textContent=current.name;
+  document.getElementById('current-level').textContent='Niveau '+lvl;
+  document.getElementById('current-bar').style.width=info.pct+'%';
+  document.getElementById('next-rank-hint').textContent=next?'Niveau '+next.level+' pour atteindre '+next.name:'Rang maximum atteint — Challenger !';
+
+  const grid=document.getElementById('ranks-grid');
+  grid.innerHTML='';
+  RANKS_DATA.forEach(r=>{
+    const minLevel=r.divisions[0].level;
+    const maxLevel=r.divisions[r.divisions.length-1].level+1;
+    const isUnlocked=lvl>=minLevel;
+    const isCurrent=lvl>=minLevel&&lvl<(RANKS_DATA[RANKS_DATA.indexOf(r)+1]?.divisions[0].level||57);
+    const card=document.createElement('div');
+    card.className='rank-card'+(isCurrent?' current':'')+(isUnlocked?' unlocked':' locked');
+    let divsHtml=r.divisions.map(d=>{
+      const unlocked=lvl>=d.level;
+      const isCur=current.name===d.name;
+      return`<div class="division-row" style="${isCur?'background:var(--bg3);border:1px solid var(--border-active)':''}">
+        <span class="division-name" style="${isCur?'color:var(--blue-light)':''}">${d.name}</span>
+        <span class="division-level">Niv.${d.level}</span>
+        ${unlocked?'<span class="division-check">✓</span>':''}
+      </div>`;
+    }).join('');
+    card.innerHTML=`
+      <img class="rank-img" src="${r.img}" alt="${r.name}" onerror="this.style.opacity='0.2'">
+      <div class="rank-name" style="color:${r.color}">${r.name}</div>
+      <div class="rank-levels">Niv. ${minLevel} — ${maxLevel-1}</div>
+      <div class="rank-divisions">${divsHtml}</div>
+    `;
+    grid.appendChild(card);
+  });
+
+  const eliteGrid=document.getElementById('elite-grid');
+  eliteGrid.innerHTML='';
+  ELITE_DATA.forEach(r=>{
+    const isUnlocked=lvl>=r.level||true;
+    const minLevel=r.name==="Maître"?57:r.name==="Grand Maître"?71:86;
+    const isCurrent=current.name===r.name||current.name.startsWith(r.name.split(' ')[0]);
+    const locked=lvl<minLevel;
+    const card=document.createElement('div');
+    card.className='prestige-card'+(locked?' ':' ');
+    card.style.opacity=locked?'0.35':'1';
+    if(!locked)card.style.borderColor=r.color;
+    card.innerHTML=`
+      <img class="prestige-img" src="${r.img}" alt="${r.name}" style="${!locked?'filter:drop-shadow(0 0 10px '+r.color+'33)':''}" onerror="this.style.opacity='0.2'">
+      <div class="prestige-name" style="color:${r.color}">${r.name}</div>
+      <div class="prestige-sub">Niveaux ${r.levelRange}</div>
+      ${!locked?'<div style="font-size:10px;color:var(--gold);margin-top:4px">✓ Débloqué</div>':'<div style="font-size:10px;color:var(--text2);margin-top:4px">🔒 Niv. '+minLevel+' requis</div>'}
+    `;
+    eliteGrid.appendChild(card);
+  });
+}
+
+render();
+</script>
+</body>
+</html>
