@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RPG de Vie — Théo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a26;
+  --border:#2a2a3a;--border-active:#4a7ab5;
+  --blue:#4a7ab5;--blue-light:#6a9fd8;
+  --xp:#7c4dff;--xp-light:#9c6fff;
+  --bronze:#cd7f32;--silver:#c0c0c0;--gold:#ffd700;
+  --text:#e8e8f0;--text2:#888899;
+  --red:#8b1a1a;
+}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;padding-bottom:80px}
+h1,h2,h3{font-family:'Cinzel',serif}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
+
+.nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Cinzel',serif;font-size:15px;color:var(--blue-light);letter-spacing:2px}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;padding-bottom:2px}
+.nav-links a:hover,.nav-links a.active{color:var(--blue-light);border-bottom:1px solid var(--blue)}
+
+.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;background:var(--bg2);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
+.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text2);text-decoration:none;font-size:9px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
+.nav-mobile a.active,.nav-mobile a:hover{color:var(--blue-light)}
+.nav-icon{font-size:16px}
+
+.hero{position:relative;width:100%;height:200px;overflow:hidden;border-bottom:1px solid var(--border);background:var(--bg2)}
+.hero img{width:100%;height:100%;object-fit:cover;opacity:0.55}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 20%,var(--bg) 100%)}
+
+main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
+
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:10px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-active),transparent)}
+.card-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:12px}
+
+.perso-grid{display:grid;grid-template-columns:100px 1fr;gap:1.25rem;align-items:start}
+.avatar-frame{width:95px;height:130px;border:1px solid var(--border-active);border-radius:4px;background:var(--bg3);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.avatar-frame::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 16px rgba(74,122,181,0.2)}
+.avatar-svg{width:75px;height:115px}
+.rank-badge{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:10px;letter-spacing:1px;color:var(--text2);text-align:center;margin-top:6px;width:95px}
+
+.perso-name{font-family:'Cinzel',serif;font-size:20px;color:var(--text);letter-spacing:1px;margin-bottom:2px}
+.perso-title{font-size:12px;color:var(--text2);letter-spacing:0.5px;margin-bottom:10px}
+
+.level-block{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:10px}
+.level-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
+.level-label{font-size:10px;color:var(--text2);letter-spacing:1px;text-transform:uppercase}
+.level-num{font-family:'Cinzel',serif;font-size:16px;color:var(--gold)}
+.bar-track{height:5px;background:var(--bg);border-radius:99px;overflow:hidden}
+.bar-xp{height:100%;border-radius:99px;background:var(--xp);transition:width 0.6s}
+.bar-blue{height:100%;border-radius:99px;background:var(--blue);transition:width 0.6s}
+.level-bottom{display:flex;justify-content:space-between;margin-top:3px;font-size:10px;color:var(--text2)}
+
+.stat-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.stat-icon{font-size:13px;width:18px;text-align:center;flex-shrink:0}
+.stat-name{font-size:11px;color:var(--text2);width:75px;flex-shrink:0;letter-spacing:0.5px;text-transform:uppercase}
+.stat-meta{display:flex;justify-content:space-between;font-size:9px;color:var(--text2);margin-top:2px}
+
+.currency-row{display:flex;gap:8px}
+.currency-item{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;display:flex;align-items:center;gap:8px;flex:1}
+.currency-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.currency-val{font-family:'Cinzel',serif;font-size:15px}
+.currency-label{font-size:9px;color:var(--text2);letter-spacing:1px;text-transform:uppercase}
+
+.quick-links{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.quick-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;text-decoration:none;display:block;transition:border-color 0.2s;position:relative;overflow:hidden}
+.quick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-active),transparent);opacity:0;transition:opacity 0.2s}
+.quick-card:hover{border-color:var(--border-active)}
+.quick-card:hover::before{opacity:1}
+.quick-card-title{font-family:'Cinzel',serif;font-size:12px;margin-bottom:3px}
+.quick-card-sub{font-size:11px;color:var(--text2)}
+
+.rune{position:absolute;bottom:6px;right:8px;width:14px;height:14px;opacity:0.3}
+
+@media(max-width:600px){
+  .nav-desktop{display:none}
+  .nav-mobile{display:flex}
+  .perso-grid{grid-template-columns:80px 1fr;gap:1rem}
+  .avatar-frame{width:75px;height:105px}
+  .avatar-svg{width:60px;height:95px}
+  .rank-badge{width:75px}
+  .currency-row{gap:6px}
+  .currency-item{padding:6px 8px}
+  .quick-links{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav-desktop">
+  <span class="nav-logo">⚔ RPG DE VIE</span>
+  <div class="nav-links">
+    <a href="index.html" class="active">Accueil</a>
+    <a href="tracker.html">Quêtes du jour</a>
+    <a href="quetes.html">Quêtes</a>
+    <a href="shop.html">Forgeron</a>
+    <a href="rangs.html">Rangs</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <img src="banner.png" alt="" onerror="this.style.display='none'">
+  <div class="hero-overlay"></div>
+</div>
+
+<main>
+
+<div class="card">
+  <div class="card-title">Fiche du personnage</div>
+  <div class="perso-grid">
+    <div>
+      <div class="avatar-frame">
+        <svg class="avatar-svg" viewBox="0 0 75 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="37" cy="16" r="11" stroke="#4a7ab5" stroke-width="1.2"/>
+          <path d="M34 14 Q35 8 37 7 Q39 8 40 14" stroke="#4a7ab5" stroke-width="0.8" fill="none"/>
+          <path d="M16 46 Q16 30 37 30 Q58 30 58 46 L60 82 Q60 88 54 88 L20 88 Q14 88 14 82 Z" stroke="#4a7ab5" stroke-width="1.2" fill="rgba(74,122,181,0.06)"/>
+          <path d="M22 38 L16 46" stroke="#4a7ab5" stroke-width="1" fill="none"/>
+          <path d="M52 38 L58 46" stroke="#4a7ab5" stroke-width="1" fill="none"/>
+          <path d="M14 48 Q6 46 5 56 Q4 68 14 70" stroke="#4a7ab5" stroke-width="1" fill="none"/>
+          <path d="M60 48 Q68 46 69 56 Q70 68 60 70" stroke="#4a7ab5" stroke-width="1" fill="none"/>
+          <path d="M20 88 L18 112" stroke="#4a7ab5" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M54 88 L56 112" stroke="#4a7ab5" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M28 88 L27 112" stroke="#4a7ab5" stroke-width="0.8" opacity="0.5"/>
+          <path d="M46 88 L47 112" stroke="#4a7ab5" stroke-width="0.8" opacity="0.5"/>
+          <path d="M5 56 L2 60 L5 64" stroke="#4a7ab5" stroke-width="0.8" fill="none" opacity="0.5"/>
+          <path d="M69 56 L72 60 L69 64" stroke="#4a7ab5" stroke-width="0.8" fill="none" opacity="0.5"/>
+          <path d="M28 30 L24 44" stroke="#4a7ab5" stroke-width="0.6" opacity="0.4"/>
+          <path d="M46 30 L50 44" stroke="#4a7ab5" stroke-width="0.6" opacity="0.4"/>
+          <circle cx="37" cy="59" r="3" stroke="#8b1a1a" stroke-width="0.8" fill="rgba(139,26,26,0.2)"/>
+          <path d="M37 56 L37 62 M34 59 L40 59" stroke="#8b1a1a" stroke-width="0.6" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="rank-badge" id="rank-badge">⚔ Fer IV</div>
+    </div>
+
+    <div>
+      <div class="perso-name">Théo</div>
+      <div class="perso-title" id="perso-title">Novice en éveil</div>
+
+      <div class="level-block">
+        <div class="level-top">
+          <span class="level-label">Niveau général</span>
+          <span class="level-num" id="gen-level">1</span>
+        </div>
+        <div class="bar-track"><div class="bar-xp" id="gen-bar" style="width:0%"></div></div>
+        <div class="level-bottom">
+          <span id="gen-xp" style="color:var(--xp-light)">0 XP</span>
+          <span id="gen-xp-next">100 XP → niv.2</span>
+        </div>
+      </div>
+
+      <div id="stats-list"></div>
+    </div>
+  </div>
+  <svg class="rune" viewBox="0 0 14 14" fill="none"><path d="M7 1L8.2 5H13L9.4 7.5L10.6 12L7 9.5L3.4 12L4.6 7.5L1 5H5.8L7 1Z" fill="#8b1a1a"/></svg>
+</div>
+
+<div class="card">
+  <div class="card-title">Trésorerie</div>
+  <div class="currency-row">
+    <div class="currency-item">
+      <div class="currency-dot" style="background:var(--bronze)"></div>
+      <div><div class="currency-val" style="color:var(--bronze)" id="bronze-val">0</div><div class="currency-label">Bronze</div></div>
+    </div>
+    <div class="currency-item">
+      <div class="currency-dot" style="background:var(--silver)"></div>
+      <div><div class="currency-val" style="color:var(--silver)" id="silver-val">0</div><div class="currency-label">Argent</div></div>
+    </div>
+    <div class="currency-item">
+      <div class="currency-dot" style="background:var(--gold)"></div>
+      <div><div class="currency-val" style="color:var(--gold)" id="gold-val">0</div><div class="currency-label">Or</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="quick-links">
+  <a href="tracker.html" class="quick-card">
+    <div class="quick-card-title" style="color:var(--blue-light)">⚔ Quêtes du jour</div>
+    <div class="quick-card-sub">Coche tes habitudes et gagne de l'XP</div>
+  </a>
+  <a href="quetes.html" class="quick-card">
+    <div class="quick-card-title" style="color:var(--xp-light)">🎯 Quêtes long terme</div>
+    <div class="quick-card-sub">Tes objectifs et leur progression</div>
+  </a>
+  <a href="shop.html" class="quick-card">
+    <div class="quick-card-title" style="color:var(--gold)">🛒 Forgeron</div>
+    <div class="quick-card-sub">Achète et équipe ton personnage</div>
+  </a>
+  <a href="rangs.html" class="quick-card">
+    <div class="quick-card-title" style="color:var(--silver)">👑 Rangs</div>
+    <div class="quick-card-sub">Tableau des rangs et divisions</div>
+  </a>
+</div>
+
+</main>
+
+<nav class="nav-mobile">
+  <a href="index.html" class="active"><span class="nav-icon">🏠</span>Accueil</a>
+  <a href="tracker.html"><span class="nav-icon">⚔</span>Quêtes</a>
+  <a href="quetes.html"><span class="nav-icon">🎯</span>Objectifs</a>
+  <a href="shop.html"><span class="nav-icon">🛒</span>Shop</a>
+  <a href="rangs.html"><span class="nav-icon">👑</span>Rangs</a>
+</nav>
+
+<script>
+const HABITS=[
+  {id:1,xp:80,stat:"Force",bronze:10},{id:2,xp:50,stat:"Force",bronze:10},
+  {id:3,xp:60,stat:"Vitalité",bronze:10},{id:4,xp:30,stat:"Vitalité",bronze:10},{id:5,xp:50,stat:"Vitalité",bronze:10},
+  {id:6,xp:70,stat:"Discipline",bronze:10},{id:7,xp:50,stat:"Discipline",bronze:15},{id:8,xp:40,stat:"Discipline",bronze:10},
+  {id:9,xp:60,stat:"Intelligence",bronze:10},{id:10,xp:40,stat:"Intelligence",bronze:10},{id:11,xp:30,stat:"Intelligence",bronze:10},
+  {id:12,xp:60,stat:"Mental",bronze:15},{id:13,xp:50,stat:"Mental",bronze:15},{id:14,xp:30,stat:"Mental",bronze:10},
+  {id:15,xp:-40,stat:"Discipline",bronze:0},{id:16,xp:-40,stat:"Mental",bronze:0},
+];
+const STATS=[{id:"Force",icon:"💪"},{id:"Vitalité",icon:"🌿"},{id:"Discipline",icon:"⚡"},{id:"Intelligence",icon:"🧠"},{id:"Mental",icon:"🧘"}];
+const XP_TABLE=[100,100,100,100,100,100,100,100,100,200,200,200,200,200,200,200,200,200,200,350,350,350,350,350,350,350,350,350,350,500,500,500,500,500,500,500,500,500,500,750,750,750,750,750,750,750,750,750,750,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000];
+const RANKS=[{n:"Fer IV",m:1},{n:"Fer III",m:3},{n:"Fer II",m:5},{n:"Fer I",m:7},{n:"Bronze IV",m:9},{n:"Bronze III",m:11},{n:"Bronze II",m:13},{n:"Bronze I",m:15},{n:"Argent IV",m:17},{n:"Argent III",m:19},{n:"Argent II",m:21},{n:"Argent I",m:23},{n:"Or IV",m:25},{n:"Or III",m:27},{n:"Or II",m:29},{n:"Or I",m:31},{n:"Platine IV",m:33},{n:"Platine III",m:35},{n:"Platine II",m:37},{n:"Platine I",m:39},{n:"Diamant IV",m:41},{n:"Diamant III",m:43},{n:"Diamant II",m:45},{n:"Diamant I",m:47},{n:"Émeraude IV",m:49},{n:"Émeraude III",m:51},{n:"Émeraude II",m:53},{n:"Émeraude I",m:55},{n:"Maître",m:57},{n:"Grand Maître",m:71},{n:"Challenger",m:86}];
+const TITLES=["Novice en éveil","Apprenti du destin","Porteur d'espoir","Marcheur des ombres","Gardien de l'aube","Briseur de chaînes","Lame du serment","Élu des étoiles","Maître de soi","Challenger éternel"];
+
+function getStorageKey(){const d=new Date();return'habits_'+d.getFullYear()+'_'+d.getMonth()+'_'+d.getDate();}
+function loadChecked(){try{const d=localStorage.getItem(getStorageKey());return d?new Set(JSON.parse(d)):new Set();}catch(e){return new Set();}}
+
+function getTotalXP(stat,checked){let x=0;HABITS.forEach(h=>{if(h.stat===stat&&checked.has(h.id))x+=h.xp;});return Math.max(0,x);}
+
+function getLevelInfo(xp){
+  let rem=xp,lvl=1;
+  for(let i=0;i<XP_TABLE.length&&rem>=XP_TABLE[i];i++){rem-=XP_TABLE[i];lvl=i+2;}
+  lvl=Math.min(lvl,100);
+  const needed=XP_TABLE[Math.min(lvl-1,XP_TABLE.length-1)]||3000;
+  const current=needed-rem;
+  const pct=Math.min(100,Math.round((current/needed)*100));
+  return{lvl,current,needed,pct,rem};
+}
+
+function getRank(lvl){let r=RANKS[0];for(let x of RANKS){if(lvl>=x.m)r=x;}return r.n;}
+function getTitle(lvl){return TITLES[Math.min(Math.floor((lvl-1)/10),TITLES.length-1)];}
+
+function render(){
+  const checked=loadChecked();
+  let totalXP=0;
+  STATS.forEach(s=>{totalXP+=getTotalXP(s.id,checked);});
+  const avgXP=Math.round(totalXP/STATS.length);
+  const gen=getLevelInfo(avgXP);
+
+  document.getElementById('gen-level').textContent=gen.lvl;
+  document.getElementById('gen-bar').style.width=gen.pct+'%';
+  document.getElementById('gen-xp').textContent=avgXP+' XP';
+  document.getElementById('gen-xp-next').textContent=gen.rem+' XP → niv.'+(gen.lvl+1);
+  document.getElementById('rank-badge').textContent='⚔ '+getRank(gen.lvl);
+  document.getElementById('perso-title').textContent=getTitle(gen.lvl);
+
+  const list=document.getElementById('stats-list');
+  list.innerHTML='';
+  STATS.forEach(s=>{
+    const xp=getTotalXP(s.id,checked);
+    const info=getLevelInfo(xp);
+    const row=document.createElement('div');
+    row.className='stat-row';
+    row.innerHTML=`<span class="stat-icon">${s.icon}</span><span class="stat-name">${s.id}</span><div style="flex:1"><div class="bar-track"><div class="bar-blue" style="width:${info.pct}%"></div></div><div class="stat-meta"><span>Niv.${info.lvl}</span><span style="color:var(--xp-light)">${xp} XP · ${info.rem} restants</span></div></div>`;
+    list.appendChild(row);
+  });
+
+  const bronze=parseInt(localStorage.getItem('total_bronze')||'0');
+  document.getElementById('gold-val').textContent=Math.floor(bronze/10000);
+  document.getElementById('silver-val').textContent=Math.floor((bronze%10000)/100);
+  document.getElementById('bronze-val').textContent=bronze%100;
+}
+
+render();
+setInterval(render,3000);
+</script>
+</body>
+</html>
