@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quêtes du jour — RPG de Vie</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a26;
+  --border:#2a2a3a;--border-active:#4a7ab5;
+  --blue:#4a7ab5;--blue-light:#6a9fd8;
+  --xp:#7c4dff;--xp-light:#9c6fff;
+  --bronze:#cd7f32;--silver:#c0c0c0;--gold:#ffd700;
+  --text:#e8e8f0;--text2:#888899;
+  --red:#8b1a1a;--red-light:#c0392b;
+  --green:#2d6a2d;--green-light:#4a9e4a;
+}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;padding-bottom:80px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
+
+.nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Cinzel',serif;font-size:15px;color:var(--blue-light);letter-spacing:2px}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;padding-bottom:2px}
+.nav-links a:hover,.nav-links a.active{color:var(--blue-light);border-bottom:1px solid var(--blue)}
+
+.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;background:var(--bg2);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
+.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text2);text-decoration:none;font-size:9px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
+.nav-mobile a.active,.nav-mobile a:hover{color:var(--blue-light)}
+.nav-icon{font-size:16px}
+
+main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
+
+.page-header{margin-bottom:1.25rem}
+.page-title{font-family:'Cinzel',serif;font-size:18px;color:var(--text);letter-spacing:1px;margin-bottom:2px}
+.page-date{font-size:12px;color:var(--text2);letter-spacing:0.5px}
+
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:10px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-active),transparent)}
+.card-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:12px}
+
+.progress-block{margin-bottom:1rem}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.progress-label{font-size:12px;color:var(--text2);letter-spacing:0.5px}
+.progress-pct{font-family:'Cinzel',serif;font-size:14px;color:var(--blue-light)}
+.bar-track{height:6px;background:var(--bg);border-radius:99px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;background:var(--blue);transition:width 0.5s}
+.xp-today{display:flex;justify-content:space-between;margin-top:6px;font-size:11px}
+
+.section-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin:1rem 0 8px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.habit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-bottom:4px}
+
+.habit-card{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color 0.15s,background 0.15s;user-select:none}
+.habit-card:hover{border-color:var(--border-active)}
+.habit-card.checked{background:#0d1f0d;border-color:var(--green-light)}
+.habit-card.malus{border-color:var(--border)}
+.habit-card.malus.checked{background:#1a0a0a;border-color:var(--red-light)}
+
+.checkbox{width:18px;height:18px;border-radius:4px;border:1.5px solid var(--border-active);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background 0.15s}
+.habit-card.checked .checkbox{background:var(--green-light);border-color:var(--green-light)}
+.habit-card.malus.checked .checkbox{background:var(--red-light);border-color:var(--red-light)}
+.checkmark{display:none}
+.habit-card.checked .checkmark{display:block;color:white;font-size:11px}
+
+.habit-name{font-size:13px;font-weight:500;color:var(--text);line-height:1.2}
+.habit-meta{font-size:10px;color:var(--text2);margin-top:1px}
+.habit-card.malus .habit-meta{color:var(--red-light)}
+.habit-card.checked .habit-meta{color:var(--green-light)}
+
+.xp-popup{position:fixed;top:80px;right:20px;background:var(--bg2);border:1px solid var(--xp);border-radius:6px;padding:8px 16px;font-family:'Cinzel',serif;font-size:14px;color:var(--xp-light);z-index:200;animation:popIn 0.3s ease,fadeOut 0.5s ease 1.5s forwards;pointer-events:none}
+@keyframes popIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+
+.bronze-popup{border-color:var(--bronze);color:var(--bronze)}
+
+.reset-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:6px 16px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:border-color 0.2s,color 0.2s;text-transform:uppercase}
+.reset-btn:hover{border-color:var(--red-light);color:var(--red-light)}
+
+.streak-block{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center}
+.streak-val{font-family:'Cinzel',serif;font-size:20px;color:var(--gold)}
+.streak-label{font-size:10px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-top:1px}
+
+@media(max-width:600px){
+  .nav-desktop{display:none}
+  .nav-mobile{display:flex}
+  .habit-grid{grid-template-columns:1fr 1fr}
+  .habit-card{padding:8px 10px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav-desktop">
+  <span class="nav-logo">⚔ RPG DE VIE</span>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="tracker.html" class="active">Quêtes du jour</a>
+    <a href="quetes.html">Quêtes</a>
+    <a href="shop.html">Forgeron</a>
+    <a href="rangs.html">Rangs</a>
+  </div>
+</nav>
+
+<main>
+
+<div class="page-header">
+  <div class="page-title">⚔ Quêtes du jour</div>
+  <div class="page-date" id="page-date"></div>
+</div>
+
+<div class="card">
+  <div class="progress-block">
+    <div class="progress-top">
+      <span class="progress-label">Progression de la journée</span>
+      <span class="progress-pct" id="progress-pct">0%</span>
+    </div>
+    <div class="bar-track"><div class="bar-fill" id="progress-bar" style="width:0%"></div></div>
+    <div class="xp-today">
+      <span style="color:var(--xp-light)" id="xp-today">+0 XP aujourd'hui</span>
+      <span style="color:var(--bronze)" id="bronze-today">+0 Bronze</span>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px">
+    <div class="streak-block">
+      <div><div class="streak-val" id="streak-val">0</div><div class="streak-label">Streak 🔥</div></div>
+    </div>
+    <div class="streak-block">
+      <div><div class="streak-val" id="checked-count" style="color:var(--blue-light)">0</div><div class="streak-label">Quêtes ✓</div></div>
+    </div>
+    <div class="streak-block">
+      <div><div class="streak-val" id="total-bronze" style="color:var(--bronze)">0</div><div class="streak-label">Bronze total</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-title">Bonnes habitudes</div>
+<div class="habit-grid" id="good-habits"></div>
+
+<div class="section-title">Mauvaises habitudes</div>
+<div class="habit-grid" id="bad-habits"></div>
+
+<div style="text-align:center;margin-top:1.5rem">
+  <button class="reset-btn" onclick="resetDay()">Réinitialiser la journée</button>
+</div>
+
+</main>
+
+<nav class="nav-mobile">
+  <a href="index.html"><span class="nav-icon">🏠</span>Accueil</a>
+  <a href="tracker.html" class="active"><span class="nav-icon">⚔</span>Quêtes</a>
+  <a href="quetes.html"><span class="nav-icon">🎯</span>Objectifs</a>
+  <a href="shop.html"><span class="nav-icon">🛒</span>Shop</a>
+  <a href="rangs.html"><span class="nav-icon">👑</span>Rangs</a>
+</nav>
+
+<script>
+const HABITS=[
+  {id:1,name:"Séance muscu",xp:80,stat:"Force",bronze:10,bad:false},
+  {id:2,name:"Cardio",xp:50,stat:"Force",bronze:10,bad:false},
+  {id:3,name:"Nutrition saine",xp:60,stat:"Vitalité",bronze:10,bad:false},
+  {id:4,name:"Bonne hydratation",xp:30,stat:"Vitalité",bronze:10,bad:false},
+  {id:5,name:"Sommeil +7h",xp:50,stat:"Vitalité",bronze:10,bad:false},
+  {id:6,name:"Travail pro",xp:70,stat:"Discipline",bronze:10,bad:false},
+  {id:7,name:"Sans TikTok",xp:50,stat:"Discipline",bronze:15,bad:false},
+  {id:8,name:"Pas de procrastination",xp:40,stat:"Discipline",bronze:10,bad:false},
+  {id:9,name:"Révisions",xp:60,stat:"Intelligence",bronze:10,bad:false},
+  {id:10,name:"Lecture",xp:40,stat:"Intelligence",bronze:10,bad:false},
+  {id:11,name:"Podcast / docu",xp:30,stat:"Intelligence",bronze:10,bad:false},
+  {id:12,name:"No fap",xp:60,stat:"Mental",bronze:15,bad:false},
+  {id:13,name:"Pas se ronger les ongles",xp:50,stat:"Mental",bronze:15,bad:false},
+  {id:14,name:"Méditation",xp:30,stat:"Mental",bronze:10,bad:false},
+  {id:15,name:"TikTok",xp:-40,stat:"Discipline",bronze:0,bad:true},
+  {id:16,name:"Rongé les ongles",xp:-40,stat:"Mental",bronze:0,bad:true},
+];
+
+const MAX_XP=HABITS.filter(h=>!h.bad).reduce((s,h)=>s+h.xp,0);
+
+function getKey(){const d=new Date();return'habits_'+d.getFullYear()+'_'+d.getMonth()+'_'+d.getDate();}
+function loadChecked(){try{const d=localStorage.getItem(getKey());return d?new Set(JSON.parse(d)):new Set();}catch(e){return new Set();}}
+function saveChecked(c){try{localStorage.setItem(getKey(),JSON.stringify([...c]));}catch(e){}}
+function loadBronze(){return parseInt(localStorage.getItem('total_bronze')||'0');}
+function saveBronze(b){localStorage.setItem('total_bronze',b);}
+function loadStreak(){return parseInt(localStorage.getItem('streak')||'0');}
+
+let checked=loadChecked();
+
+function showPopup(text,isBronze=false){
+  const p=document.createElement('div');
+  p.className='xp-popup'+(isBronze?' bronze-popup':'');
+  p.textContent=text;
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),2200);
+}
+
+function toggle(id){
+  const h=HABITS.find(x=>x.id===id);
+  if(!h)return;
+  const wasBronzeEarned=checked.has(id);
+  if(checked.has(id)){
+    checked.delete(id);
+    if(!h.bad&&h.bronze>0){
+      const b=loadBronze();
+      saveBronze(Math.max(0,b-h.bronze));
+    }
+  } else {
+    checked.add(id);
+    if(!h.bad&&h.bronze>0){
+      const b=loadBronze();
+      saveBronze(b+h.bronze);
+      showPopup('+'+h.bronze+' Bronze',true);
+    }
+    if(h.xp>0)showPopup('+'+h.xp+' XP '+h.stat);
+    else showPopup(h.xp+' XP '+h.stat);
+  }
+  saveChecked(checked);
+  render();
+}
+
+function resetDay(){
+  if(!confirm('Réinitialiser toutes les quêtes du jour ?'))return;
+  checked.clear();
+  saveChecked(checked);
+  render();
+}
+
+function render(){
+  let totalXP=0,totalBronzeToday=0,checkedCount=0;
+  HABITS.forEach(h=>{
+    if(checked.has(h.id)){
+      totalXP+=h.xp;
+      if(!h.bad)totalBronzeToday+=h.bronze;
+      if(!h.bad)checkedCount++;
+    }
+  });
+  const pct=Math.max(0,Math.min(100,Math.round((totalXP/MAX_XP)*100)));
+  document.getElementById('progress-pct').textContent=pct+'%';
+  document.getElementById('progress-bar').style.width=pct+'%';
+  document.getElementById('xp-today').textContent=(totalXP>=0?'+':'')+totalXP+' XP aujourd\'hui';
+  document.getElementById('bronze-today').textContent='+'+totalBronzeToday+' Bronze aujourd\'hui';
+  document.getElementById('checked-count').textContent=checkedCount+'/'+HABITS.filter(h=>!h.bad).length;
+  document.getElementById('total-bronze').textContent=loadBronze();
+  document.getElementById('streak-val').textContent=loadStreak();
+
+  function renderHabits(list,containerId){
+    const el=document.getElementById(containerId);
+    el.innerHTML='';
+    list.forEach(h=>{
+      const isChecked=checked.has(h.id);
+      const card=document.createElement('div');
+      card.className='habit-card'+(h.bad?' malus':'')+(isChecked?' checked':'');
+      card.onclick=()=>toggle(h.id);
+      card.innerHTML=`
+        <div class="checkbox"><span class="checkmark">✓</span></div>
+        <div>
+          <div class="habit-name">${h.name}</div>
+          <div class="habit-meta">${h.xp>0?'+':''}${h.xp} XP · ${h.stat}${h.bronze>0?' · +'+h.bronze+' 🟤':''}</div>
+        </div>`;
+      el.appendChild(card);
+    });
+  }
+
+  renderHabits(HABITS.filter(h=>!h.bad),'good-habits');
+  renderHabits(HABITS.filter(h=>h.bad),'bad-habits');
+}
+
+const days=['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+const months=['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+const now=new Date();
+document.getElementById('page-date').textContent=days[now.getDay()]+' '+now.getDate()+' '+months[now.getMonth()]+' '+now.getFullYear();
+
+render();
+</script>
+</body>
+</html>
