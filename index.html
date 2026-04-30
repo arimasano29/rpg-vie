@@ -342,7 +342,7 @@ function render(){
   document.getElementById('gen-bar').style.width=gen.pct+'%';
   document.getElementById('gen-xp').textContent=avgXP+' XP';
   document.getElementById('gen-xp-next').textContent=gen.rem+' XP → niv.'+(gen.lvl+1);
-  document.getElementById('rank-badge').textContent='⚔ '+rank.n;
+  if(document.getElementById('rank-badge'))document.getElementById('rank-badge').textContent='⚔ '+rank.n;
   document.getElementById('rank-img').src=rank.img;
   document.getElementById('rank-name-inline').textContent=rank.n;
   document.getElementById('perso-title').textContent=getTitle(gen.lvl);
