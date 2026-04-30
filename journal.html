@@ -20,8 +20,6 @@ body{background:var(--bg);color:var(--text);font-size:16px;line-height:1.5;font-
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
-
-/* FOND FLOUTÉ */
 body::before{content:'';position:fixed;inset:0;background:url('bg6.jpg') center/cover no-repeat;filter:blur(18px) brightness(0.18);z-index:-1;transform:scale(1.05)}
 
 .nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:54px;background:rgba(10,10,15,0.95);border-bottom:1px solid #1a0a0a;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
@@ -29,14 +27,12 @@ body::before{content:'';position:fixed;inset:0;background:url('bg6.jpg') center/
 .nav-links{display:flex;gap:2rem}
 .nav-links a{color:var(--text2);text-decoration:none;font-size:14px;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;padding-bottom:2px}
 .nav-links a:hover,.nav-links a.active{color:var(--red-glow);border-bottom:1px solid var(--red)}
-
 .nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:62px;background:rgba(10,10,15,0.95);border-top:1px solid #1a0a0a;z-index:100;backdrop-filter:blur(8px);justify-content:space-around;align-items:center}
 .nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text2);text-decoration:none;font-size:10px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
 .nav-mobile a.active,.nav-mobile a:hover{color:var(--red-glow)}
 .nav-icon{font-size:18px}
 
-main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
-
+main{max-width:900px;margin:0 auto;padding:1.25rem 1rem}
 .page-header{margin-bottom:1.25rem}
 .page-title{font-family:'Cinzel',serif;font-size:20px;color:var(--text);letter-spacing:1px;margin-bottom:4px}
 .page-sub{font-size:14px;color:var(--text2)}
@@ -45,48 +41,89 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent)}
 .card-title{font-family:'Cinzel',serif;font-size:13px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:14px}
 
-.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
-.filter-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 14px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all 0.2s}
+/* STATS BAR */
+.stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:1rem}
+.stat-pill{background:rgba(18,18,26,0.85);border:1px solid #1a0a0a;border-radius:6px;padding:8px 12px;text-align:center;backdrop-filter:blur(4px)}
+.stat-pill-val{font-family:'Cinzel',serif;font-size:18px;margin-bottom:2px}
+.stat-pill-label{font-size:11px;color:var(--text2);letter-spacing:0.5px;text-transform:uppercase}
+
+/* NOTE EDITOR */
+.note-editor{background:rgba(18,18,26,0.85);border:1px solid #1a0a0a;border-radius:8px;padding:1.25rem;margin-bottom:10px;backdrop-filter:blur(4px);position:relative;overflow:hidden}
+.note-editor::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.editor-title{font-family:'Cinzel',serif;font-size:13px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:14px}
+.note-input-title{width:100%;background:rgba(10,10,15,0.6);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:500;outline:none;margin-bottom:10px;transition:border-color 0.2s}
+.note-input-title:focus{border-color:var(--red)}
+.note-input-title::placeholder{color:var(--text2)}
+.note-textarea{width:100%;background:rgba(10,10,15,0.6);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:500;outline:none;resize:vertical;min-height:100px;transition:border-color 0.2s;line-height:1.6}
+.note-textarea:focus{border-color:var(--red)}
+.note-textarea::placeholder{color:var(--text2)}
+.editor-actions{display:flex;justify-content:space-between;align-items:center;margin-top:12px;flex-wrap:wrap;gap:8px}
+.image-upload-zone{display:flex;align-items:center;gap:8px}
+.img-label{background:rgba(26,18,18,0.6);border:1px solid var(--border);border-radius:6px;padding:6px 14px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all 0.2s}
+.img-label:hover{border-color:var(--red);color:var(--red-glow)}
+#img-input{display:none}
+.img-preview-wrap{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.img-preview{position:relative;width:80px;height:80px;border-radius:6px;overflow:hidden;border:1px solid var(--border)}
+.img-preview img{width:100%;height:100%;object-fit:cover}
+.img-preview-remove{position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.7);border:none;border-radius:3px;color:white;cursor:pointer;font-size:10px;padding:1px 4px}
+.btn-primary{background:var(--red);border:none;border-radius:6px;padding:8px 20px;color:white;font-family:'Cinzel',serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:opacity 0.2s}
+.btn-primary:hover{opacity:0.85}
+.btn-cancel-edit{background:none;border:1px solid var(--border);border-radius:6px;padding:8px 16px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;transition:all 0.2s}
+.btn-cancel-edit:hover{border-color:var(--red-glow);color:var(--red-glow)}
+
+/* FILTERS */
+.filters-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filter-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 12px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all 0.2s}
 .filter-btn:hover{border-color:var(--red);color:var(--red-glow)}
 .filter-btn.active{background:rgba(155,26,26,0.15);border-color:var(--red);color:var(--red-glow)}
+.clear-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 14px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all 0.2s}
+.clear-btn:hover{border-color:var(--red-glow);color:var(--red-glow)}
 
-.journal-list{display:flex;flex-direction:column;gap:8px}
-
-.journal-entry{background:rgba(26,18,18,0.7);border:1px solid #1a0a0a;border-radius:6px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px;position:relative;transition:border-color 0.2s}
-.journal-entry:hover{border-color:var(--red)}
-.entry-icon{font-size:20px;flex-shrink:0;margin-top:2px}
-.entry-content{flex:1;min-width:0}
+/* ENTRIES */
+.journal-list{display:flex;flex-direction:column;gap:10px}
+.journal-entry{background:rgba(26,18,18,0.7);border:1px solid #1a0a0a;border-radius:8px;padding:14px;position:relative;transition:border-color 0.2s}
+.journal-entry:hover{border-color:#2a0a0a}
+.journal-entry.note-type{border-left:2px solid var(--gold)}
+.entry-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:6px}
+.entry-icon{font-size:18px;flex-shrink:0;margin-top:2px}
+.entry-meta{flex:1;min-width:0}
 .entry-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:2px}
-.entry-detail{font-size:13px;color:var(--text2)}
-.entry-date{font-size:11px;color:var(--text2);margin-top:4px;letter-spacing:0.5px}
-.entry-badge{display:inline-block;font-size:11px;padding:1px 8px;border-radius:3px;border:1px solid;margin-right:6px;margin-top:4px}
+.entry-body{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:8px;white-space:pre-wrap;word-break:break-word}
+.entry-images{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.entry-img{width:100px;height:100px;border-radius:6px;object-fit:cover;border:1px solid var(--border);cursor:pointer;transition:transform 0.2s}
+.entry-img:hover{transform:scale(1.05)}
+.entry-footer{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.entry-dates{font-size:11px;color:var(--text2)}
+.entry-actions{display:flex;gap:6px}
+.entry-badges{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px}
+.entry-badge{display:inline-block;font-size:11px;padding:1px 8px;border-radius:3px;border:1px solid}
 .badge-xp{border-color:var(--xp);color:var(--xp-light);background:rgba(124,77,255,0.1)}
 .badge-bronze{border-color:var(--bronze);color:var(--bronze);background:rgba(205,127,50,0.1)}
-.badge-gold{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,0.1)}
 .badge-quest{border-color:var(--red);color:var(--red-glow);background:rgba(155,26,26,0.1)}
 .badge-shop{border-color:var(--silver);color:var(--silver);background:rgba(192,192,192,0.1)}
 .badge-level{border-color:var(--green-light);color:var(--green-light);background:rgba(74,158,74,0.1)}
+.badge-note{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,0.1)}
+.action-btn{background:none;border:1px solid var(--border);border-radius:4px;padding:3px 10px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all 0.2s}
+.action-btn:hover{border-color:var(--red-glow);color:var(--red-glow)}
+.action-btn.edit-btn:hover{border-color:var(--gold);color:var(--gold)}
 
-.delete-btn{background:none;border:none;color:var(--text2);cursor:pointer;font-size:14px;padding:2px 6px;border-radius:3px;transition:color 0.2s;flex-shrink:0}
-.delete-btn:hover{color:var(--red-glow)}
+/* LIGHTBOX */
+.lightbox{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:500;align-items:center;justify-content:center;padding:20px}
+.lightbox.open{display:flex}
+.lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:8px}
+.lightbox-close{position:absolute;top:20px;right:20px;background:none;border:none;color:white;font-size:28px;cursor:pointer}
 
 .empty-state{text-align:center;padding:3rem 1rem;color:var(--text2)}
 .empty-icon{font-size:40px;margin-bottom:12px}
 .empty-text{font-family:'Cinzel',serif;font-size:14px;letter-spacing:1px}
 .empty-sub{font-size:13px;margin-top:6px}
 
-.stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:1rem}
-.stat-pill{background:rgba(18,18,26,0.85);border:1px solid #1a0a0a;border-radius:6px;padding:8px 12px;text-align:center}
-.stat-pill-val{font-family:'Cinzel',serif;font-size:18px;margin-bottom:2px}
-.stat-pill-label{font-size:11px;color:var(--text2);letter-spacing:0.5px;text-transform:uppercase}
-
-.clear-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:6px 16px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all 0.2s}
-.clear-btn:hover{border-color:var(--red-glow);color:var(--red-glow)}
-
 @media(max-width:600px){
   .nav-desktop{display:none}
   .nav-mobile{display:flex}
   .stats-bar{grid-template-columns:repeat(2,1fr)}
+  .entry-img{width:80px;height:80px}
 }
 </style>
 </head>
@@ -108,21 +145,46 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 
 <div class="page-header">
   <div class="page-title">📖 Journal</div>
-  <div class="page-sub">Historique de ta progression</div>
+  <div class="page-sub">Historique, notes et souvenirs de ta progression</div>
 </div>
 
 <div class="stats-bar" id="stats-bar"></div>
 
+<!-- ÉDITEUR DE NOTE -->
+<div class="note-editor">
+  <div class="editor-title" id="editor-label">✍ Nouvelle note</div>
+  <input class="note-input-title" id="note-title" placeholder="Titre de ta note...">
+  <textarea class="note-textarea" id="note-body" placeholder="Écris ici... ta progression, tes ressentis, tes objectifs du jour, une réflexion..."></textarea>
+  <div class="img-preview-wrap" id="img-preview-wrap"></div>
+  <div class="editor-actions">
+    <div class="image-upload-zone">
+      <label class="img-label" for="img-input">📷 Ajouter une image</label>
+      <input type="file" id="img-input" accept="image/*" multiple>
+      <span id="img-count" style="font-size:12px;color:var(--text2)"></span>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-cancel-edit" id="cancel-edit-btn" style="display:none" onclick="cancelEdit()">Annuler</button>
+      <button class="btn-primary" onclick="saveNote()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- LISTE -->
 <div class="card">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-    <div class="card-title" style="margin-bottom:0">Historique</div>
+  <div class="filters-row">
+    <div class="filters" id="filters"></div>
     <button class="clear-btn" onclick="clearAll()">Tout effacer</button>
   </div>
-  <div class="filters" id="filters"></div>
   <div class="journal-list" id="journal-list"></div>
 </div>
 
 </main>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
 
 <nav class="nav-mobile">
   <a href="index.html"><span class="nav-icon">🏠</span>Accueil</a>
@@ -136,51 +198,155 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 <script>
 const FILTERS=[
   {id:'all',label:'Tout'},
+  {id:'note',label:'Notes'},
   {id:'habit',label:'Habitudes'},
   {id:'quest',label:'Quêtes'},
   {id:'shop',label:'Achats'},
-  {id:'level',label:'Niveaux'},
-  {id:'bronze',label:'Bronze'},
 ];
 
 const TYPE_CONFIG={
-  habit:{icon:'⚔',label:'Habitude accomplie',badgeClass:'badge-xp'},
-  quest:{icon:'🎯',label:'Quête accomplie',badgeClass:'badge-quest'},
-  shop:{icon:'🛒',label:'Achat au forgeron',badgeClass:'badge-shop'},
-  level:{icon:'⬆',label:'Niveau atteint',badgeClass:'badge-level'},
-  bronze:{icon:'🟤',label:'Bronze gagné',badgeClass:'badge-bronze'},
-  malus:{icon:'❌',label:'Mauvaise habitude',badgeClass:'badge-xp'},
+  note:{icon:'✍',badgeClass:'badge-note'},
+  habit:{icon:'⚔',badgeClass:'badge-xp'},
+  malus:{icon:'❌',badgeClass:'badge-xp'},
+  quest:{icon:'🎯',badgeClass:'badge-quest'},
+  shop:{icon:'🛒',badgeClass:'badge-shop'},
+  level:{icon:'⬆',badgeClass:'badge-level'},
+  bronze:{icon:'🟤',badgeClass:'badge-bronze'},
 };
 
 let currentFilter='all';
+let editingId=null;
+let pendingImages=[];
 
-function loadEntries(){
-  try{const d=localStorage.getItem('journal_entries');return d?JSON.parse(d):[];}
-  catch(e){return[];}
+// --- STORAGE ---
+function loadEntries(){try{return JSON.parse(localStorage.getItem('journal_entries')||'[]');}catch(e){return[];}}
+function saveEntries(e){try{localStorage.setItem('journal_entries',JSON.stringify(e));}catch(e){}}
+
+// --- IMAGES ---
+document.getElementById('img-input').addEventListener('change',function(e){
+  const files=Array.from(e.target.files);
+  files.forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      pendingImages.push({id:Date.now().toString()+Math.random(),data:ev.target.result,name:file.name});
+      renderImagePreviews();
+    };
+    reader.readAsDataURL(file);
+  });
+  this.value='';
+});
+
+function renderImagePreviews(){
+  const wrap=document.getElementById('img-preview-wrap');
+  wrap.innerHTML='';
+  pendingImages.forEach(img=>{
+    const div=document.createElement('div');
+    div.className='img-preview';
+    div.innerHTML=`<img src="${img.data}" alt="${img.name}"><button class="img-preview-remove" onclick="removePendingImg('${img.id}')">✕</button>`;
+    wrap.appendChild(div);
+  });
+  document.getElementById('img-count').textContent=pendingImages.length>0?`${pendingImages.length} image(s)`:'';
 }
 
-function saveEntries(entries){
-  try{localStorage.setItem('journal_entries',JSON.stringify(entries));}
-  catch(e){}
+function removePendingImg(id){
+  pendingImages=pendingImages.filter(i=>i.id!==id);
+  renderImagePreviews();
+}
+
+// --- NOTE CRUD ---
+function saveNote(){
+  const title=document.getElementById('note-title').value.trim();
+  const body=document.getElementById('note-body').value.trim();
+  if(!title&&!body&&pendingImages.length===0)return;
+  const entries=loadEntries();
+  const now=Date.now();
+  if(editingId){
+    const idx=entries.findIndex(e=>e.id===editingId);
+    if(idx!==-1){
+      entries[idx].title=title||'Note sans titre';
+      entries[idx].body=body;
+      entries[idx].images=[...((entries[idx].images||[]).filter(i=>!pendingImages.find(p=>p.id===i.id))),...pendingImages];
+      entries[idx].updatedAt=now;
+    }
+    editingId=null;
+    document.getElementById('cancel-edit-btn').style.display='none';
+    document.getElementById('editor-label').textContent='✍ Nouvelle note';
+  } else {
+    entries.push({id:now.toString(),type:'note',title:title||'Note sans titre',body,images:pendingImages,ts:now,updatedAt:null});
+  }
+  saveEntries(entries);
+  document.getElementById('note-title').value='';
+  document.getElementById('note-body').value='';
+  pendingImages=[];
+  renderImagePreviews();
+  render();
+}
+
+function editNote(id){
+  const entry=loadEntries().find(e=>e.id===id);
+  if(!entry||entry.type!=='note')return;
+  editingId=id;
+  document.getElementById('note-title').value=entry.title||'';
+  document.getElementById('note-body').value=entry.body||'';
+  pendingImages=entry.images?[...entry.images]:[];
+  renderImagePreviews();
+  document.getElementById('cancel-edit-btn').style.display='inline-block';
+  document.getElementById('editor-label').textContent='✏ Modifier la note';
+  document.querySelector('.note-editor').scrollIntoView({behavior:'smooth'});
+}
+
+function cancelEdit(){
+  editingId=null;
+  document.getElementById('note-title').value='';
+  document.getElementById('note-body').value='';
+  pendingImages=[];
+  renderImagePreviews();
+  document.getElementById('cancel-edit-btn').style.display='none';
+  document.getElementById('editor-label').textContent='✍ Nouvelle note';
 }
 
 function deleteEntry(id){
-  const entries=loadEntries().filter(e=>e.id!==id);
-  saveEntries(entries);
+  if(!confirm('Supprimer cette entrée ?'))return;
+  saveEntries(loadEntries().filter(e=>e.id!==id));
   render();
 }
 
 function clearAll(){
-  if(!confirm('Effacer tout le journal ?'))return;
+  if(!confirm('Effacer tout le journal ? Cette action est irréversible.'))return;
   saveEntries([]);
   render();
 }
 
+// --- LIGHTBOX ---
+function openLightbox(src){
+  document.getElementById('lightbox-img').src=src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+
+// --- FORMAT ---
 function formatDate(ts){
   const d=new Date(ts);
   const days=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
   const months=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
-  return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} à ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+  return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} · ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+}
+
+// --- RENDER ---
+function renderStats(){
+  const entries=loadEntries();
+  const notes=entries.filter(e=>e.type==='note').length;
+  const totalXP=entries.filter(e=>e.xp>0).reduce((s,e)=>s+(e.xp||0),0);
+  const totalBronze=entries.filter(e=>e.bronze>0).reduce((s,e)=>s+(e.bronze||0),0);
+  const habits=entries.filter(e=>e.type==='habit').length;
+  const quests=entries.filter(e=>e.type==='quest').length;
+  document.getElementById('stats-bar').innerHTML=`
+    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--gold)">${notes}</div><div class="stat-pill-label">Notes</div></div>
+    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--xp-light)">${totalXP}</div><div class="stat-pill-label">XP total</div></div>
+    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--bronze)">${totalBronze}</div><div class="stat-pill-label">Bronze</div></div>
+    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--red-glow)">${habits}</div><div class="stat-pill-label">Habitudes</div></div>
+    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--green-light)">${quests}</div><div class="stat-pill-label">Quêtes</div></div>
+  `;
 }
 
 function renderFilters(){
@@ -195,81 +361,60 @@ function renderFilters(){
   });
 }
 
-function renderStats(){
-  const entries=loadEntries();
-  const totalXP=entries.filter(e=>e.type==='habit'||e.type==='quest').reduce((s,e)=>s+(e.xp||0),0);
-  const totalBronze=entries.filter(e=>e.bronze>0).reduce((s,e)=>s+(e.bronze||0),0);
-  const totalQuests=entries.filter(e=>e.type==='quest').length;
-  const totalHabits=entries.filter(e=>e.type==='habit').length;
-  const totalPurchases=entries.filter(e=>e.type==='shop').length;
-  const bar=document.getElementById('stats-bar');
-  bar.innerHTML=`
-    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--xp-light)">${totalXP}</div><div class="stat-pill-label">XP total</div></div>
-    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--bronze)">${totalBronze}</div><div class="stat-pill-label">Bronze gagné</div></div>
-    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--red-glow)">${totalHabits}</div><div class="stat-pill-label">Habitudes</div></div>
-    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--gold)">${totalQuests}</div><div class="stat-pill-label">Quêtes</div></div>
-    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--silver)">${totalPurchases}</div><div class="stat-pill-label">Achats</div></div>
-  `;
-}
-
 function renderList(){
-  const allEntries=loadEntries();
-  const entries=currentFilter==='all'?allEntries:allEntries.filter(e=>e.type===currentFilter);
+  const all=loadEntries();
+  const entries=currentFilter==='all'?all:all.filter(e=>e.type===currentFilter);
   const list=document.getElementById('journal-list');
   if(entries.length===0){
-    list.innerHTML=`<div class="empty-state"><div class="empty-icon">📜</div><div class="empty-text">Aucune entrée</div><div class="empty-sub">${currentFilter==='all'?'Commence à cocher des habitudes pour remplir ton journal':'Aucune entrée de ce type'}</div></div>`;
+    list.innerHTML=`<div class="empty-state"><div class="empty-icon">📜</div><div class="empty-text">Aucune entrée</div><div class="empty-sub">${currentFilter==='all'?'Écris ta première note ou commence à cocher des habitudes':'Aucune entrée de ce type'}</div></div>`;
     return;
   }
   list.innerHTML='';
-  const sorted=[...entries].reverse();
-  sorted.forEach(e=>{
-    const cfg=TYPE_CONFIG[e.type]||TYPE_CONFIG.habit;
+  [...entries].reverse().forEach(e=>{
+    const cfg=TYPE_CONFIG[e.type]||TYPE_CONFIG.note;
+    const isNote=e.type==='note';
     const div=document.createElement('div');
-    div.className='journal-entry';
+    div.className='journal-entry'+(isNote?' note-type':'');
+
     let badges='';
     if(e.xp)badges+=`<span class="entry-badge badge-xp">${e.xp>0?'+':''}${e.xp} XP</span>`;
     if(e.bronze)badges+=`<span class="entry-badge badge-bronze">+${e.bronze} Bronze</span>`;
-    if(e.level)badges+=`<span class="entry-badge badge-level">Niveau ${e.level}</span>`;
     if(e.cost)badges+=`<span class="entry-badge badge-shop">-${e.cost} Bronze</span>`;
+    if(isNote)badges+=`<span class="entry-badge badge-note">Note personnelle</span>`;
+
+    let imagesHtml='';
+    if(e.images&&e.images.length>0){
+      imagesHtml=`<div class="entry-images">${e.images.map(img=>`<img class="entry-img" src="${img.data}" alt="${img.name||''}" onclick="openLightbox('${img.data}')">`).join('')}</div>`;
+    }
+
+    let datesHtml=`<span>Créé le ${formatDate(e.ts)}</span>`;
+    if(e.updatedAt)datesHtml+=`<span style="margin-left:10px">Modifié le ${formatDate(e.updatedAt)}</span>`;
+
     div.innerHTML=`
-      <div class="entry-icon">${cfg.icon}</div>
-      <div class="entry-content">
-        <div class="entry-title">${e.title}</div>
-        ${e.detail?`<div class="entry-detail">${e.detail}</div>`:''}
-        <div>${badges}</div>
-        <div class="entry-date">${formatDate(e.ts)}</div>
+      <div class="entry-header">
+        <div class="entry-icon">${cfg.icon}</div>
+        <div class="entry-meta">
+          <div class="entry-title">${e.title||'Sans titre'}</div>
+          ${e.detail?`<div style="font-size:13px;color:var(--text2);margin-bottom:4px">${e.detail}</div>`:''}
+        </div>
       </div>
-      <button class="delete-btn" onclick="deleteEntry('${e.id}')" title="Supprimer">✕</button>
-    `;
+      ${badges?`<div class="entry-badges">${badges}</div>`:''}
+      ${e.body?`<div class="entry-body">${e.body}</div>`:''}
+      ${imagesHtml}
+      <div class="entry-footer">
+        <div class="entry-dates">${datesHtml}</div>
+        <div class="entry-actions">
+          ${isNote?`<button class="action-btn edit-btn" onclick="editNote('${e.id}')">✏ Modifier</button>`:''}
+          <button class="action-btn" onclick="deleteEntry('${e.id}')">✕ Supprimer</button>
+        </div>
+      </div>`;
     list.appendChild(div);
   });
 }
 
-function render(){
-  renderFilters();
-  renderStats();
-  renderList();
-}
-
-// Listen for journal updates from other pages
-window.addEventListener('storage',e=>{
-  if(e.key==='journal_entries')render();
-});
-
+function render(){renderStats();renderFilters();renderList();}
+window.addEventListener('storage',e=>{if(e.key==='journal_entries')render();});
 render();
-
-// Helper function for other pages to add entries
-window.addJournalEntry=function(type,title,detail,extras={}){
-  const entries=loadEntries();
-  const entry={
-    id:Date.now().toString(),
-    type,title,detail,
-    ts:Date.now(),
-    ...extras
-  };
-  entries.push(entry);
-  saveEntries(entries);
-};
 </script>
 </body>
 </html>
