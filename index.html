@@ -16,22 +16,22 @@
   --text:#e8e8f0;--text2:#888899;
   --red:#8b1a1a;
 }
-body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;padding-bottom:80px}
+body{background:var(--bg);color:var(--text);font-size:16px;line-height:1.5;font-family:'Rajdhani',sans-serif;font-size:16px;min-height:100vh;padding-bottom:80px}
 h1,h2,h3{font-family:'Cinzel',serif}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
 
-.nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
-.nav-logo{font-family:'Cinzel',serif;font-size:15px;color:var(--blue-light);letter-spacing:2px}
+.nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:54px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Cinzel',serif;font-size:16px;color:var(--blue-light);letter-spacing:2px}
 .nav-links{display:flex;gap:2rem}
-.nav-links a{color:var(--text2);text-decoration:none;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;padding-bottom:2px}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:14px;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;padding-bottom:2px}
 .nav-links a:hover,.nav-links a.active{color:var(--blue-light);border-bottom:1px solid var(--blue)}
 
-.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;background:var(--bg2);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
-.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text2);text-decoration:none;font-size:9px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
+.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:62px;background:var(--bg2);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
+.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text2);text-decoration:none;font-size:11px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
 .nav-mobile a.active,.nav-mobile a:hover{color:var(--blue-light)}
-.nav-icon{font-size:16px}
+.nav-icon{font-size:18px}
 
 .hero{position:relative;width:100%;height:200px;overflow:hidden;border-bottom:1px solid var(--border);background:var(--bg2)}
 .hero img{width:100%;height:100%;object-fit:cover;opacity:0.55}
@@ -41,56 +41,59 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:10px;position:relative;overflow:hidden}
 .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-active),transparent)}
-.card-title{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:12px}
+.card-title{font-family:'Cinzel',serif;font-size:13px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:14px}
 
-.perso-grid{display:grid;grid-template-columns:100px 1fr;gap:1.25rem;align-items:start}
-.avatar-frame{width:95px;height:130px;border:1px solid var(--border-active);border-radius:4px;background:var(--bg3);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
-.avatar-frame::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 16px rgba(74,122,181,0.2)}
-.avatar-svg{width:75px;height:115px}
-.rank-badge{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:3px 6px;font-size:10px;letter-spacing:1px;color:var(--text2);text-align:center;margin-top:6px;width:95px}
+.perso-grid{display:grid;grid-template-columns:115px 1fr;gap:1.25rem;align-items:start}
+.avatar-frame{width:110px;height:160px;border:1px solid var(--border-active);border-radius:4px;background:var(--bg3);display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.avatar-frame::after{content:'';position:absolute;inset:0;box-shadow:inset 0 0 20px rgba(74,122,181,0.25)}
+.rank-badge{background:var(--bg3);border:1px solid var(--border);border-radius:4px;padding:4px 6px;font-size:11px;letter-spacing:1px;color:var(--text2);text-align:center;margin-top:6px;width:110px}
 
-.perso-name{font-family:'Cinzel',serif;font-size:20px;color:var(--text);letter-spacing:1px;margin-bottom:2px}
-.perso-title{font-size:12px;color:var(--text2);letter-spacing:0.5px;margin-bottom:10px}
+.perso-name{font-family:'Cinzel',serif;font-size:22px;color:var(--text);letter-spacing:1px;margin-bottom:2px}
+.perso-title{font-size:13px;color:var(--text2);letter-spacing:0.5px;margin-bottom:12px}
 
-.level-block{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 12px;margin-bottom:10px}
-.level-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
-.level-label{font-size:10px;color:var(--text2);letter-spacing:1px;text-transform:uppercase}
-.level-num{font-family:'Cinzel',serif;font-size:16px;color:var(--gold)}
+.level-block{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 14px;margin-bottom:12px}
+.level-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.level-label{font-size:11px;color:var(--text2);letter-spacing:1px;text-transform:uppercase}
+.level-num{font-family:'Cinzel',serif;font-size:18px;color:var(--gold)}
 .bar-track{height:5px;background:var(--bg);border-radius:99px;overflow:hidden}
 .bar-xp{height:100%;border-radius:99px;background:var(--xp);transition:width 0.6s}
 .bar-blue{height:100%;border-radius:99px;background:var(--blue);transition:width 0.6s}
-.level-bottom{display:flex;justify-content:space-between;margin-top:3px;font-size:10px;color:var(--text2)}
+.level-bottom{display:flex;justify-content:space-between;margin-top:4px;font-size:13px;color:var(--text2)}
 
-.stat-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
-.stat-icon{font-size:13px;width:18px;text-align:center;flex-shrink:0}
-.stat-name{font-size:11px;color:var(--text2);width:75px;flex-shrink:0;letter-spacing:0.5px;text-transform:uppercase}
-.stat-meta{display:flex;justify-content:space-between;font-size:9px;color:var(--text2);margin-top:2px}
+.rank-inline{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.rank-img-small{width:28px;height:28px;object-fit:contain}
+.rank-name-text{font-size:14px;color:var(--blue-light);letter-spacing:0.5px}
+
+.stat-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.stat-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0}
+.stat-name{font-size:13px;color:var(--text2);width:85px;flex-shrink:0;letter-spacing:0.5px;text-transform:uppercase}
+.stat-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-top:3px}
+.stat-title-text{font-size:10px;color:var(--blue-light);font-style:italic}
 
 .currency-row{display:flex;gap:8px}
-.currency-item{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 12px;display:flex;align-items:center;gap:8px;flex:1}
-.currency-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.currency-val{font-family:'Cinzel',serif;font-size:15px}
-.currency-label{font-size:9px;color:var(--text2);letter-spacing:1px;text-transform:uppercase}
+.currency-item{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px 14px;display:flex;align-items:center;gap:8px;flex:1}
+.currency-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.currency-val{font-family:'Cinzel',serif;font-size:16px}
+.currency-label{font-size:11px;color:var(--text2);letter-spacing:1px;text-transform:uppercase}
 
 .quick-links{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.quick-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;text-decoration:none;display:block;transition:border-color 0.2s;position:relative;overflow:hidden}
+.quick-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;text-decoration:none;display:block;transition:border-color 0.2s;position:relative;overflow:hidden}
 .quick-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border-active),transparent);opacity:0;transition:opacity 0.2s}
 .quick-card:hover{border-color:var(--border-active)}
 .quick-card:hover::before{opacity:1}
-.quick-card-title{font-family:'Cinzel',serif;font-size:12px;margin-bottom:3px}
-.quick-card-sub{font-size:11px;color:var(--text2)}
+.quick-card-title{font-family:'Cinzel',serif;font-size:14px;margin-bottom:4px}
+.quick-card-sub{font-size:13px;color:var(--text2)}
 
 .rune{position:absolute;bottom:6px;right:8px;width:14px;height:14px;opacity:0.3}
 
 @media(max-width:600px){
   .nav-desktop{display:none}
   .nav-mobile{display:flex}
-  .perso-grid{grid-template-columns:80px 1fr;gap:1rem}
-  .avatar-frame{width:75px;height:105px}
-  .avatar-svg{width:60px;height:95px}
-  .rank-badge{width:75px}
+  .perso-grid{grid-template-columns:90px 1fr;gap:1rem}
+  .avatar-frame{width:85px;height:125px}
+  .rank-badge{width:85px}
   .currency-row{gap:6px}
-  .currency-item{padding:6px 8px}
+  .currency-item{padding:6px 10px}
   .quick-links{grid-template-columns:1fr 1fr}
 }
 </style>
@@ -120,24 +123,60 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
   <div class="perso-grid">
     <div>
       <div class="avatar-frame">
-        <svg class="avatar-svg" viewBox="0 0 75 115" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="37" cy="16" r="11" stroke="#4a7ab5" stroke-width="1.2"/>
-          <path d="M34 14 Q35 8 37 7 Q39 8 40 14" stroke="#4a7ab5" stroke-width="0.8" fill="none"/>
-          <path d="M16 46 Q16 30 37 30 Q58 30 58 46 L60 82 Q60 88 54 88 L20 88 Q14 88 14 82 Z" stroke="#4a7ab5" stroke-width="1.2" fill="rgba(74,122,181,0.06)"/>
-          <path d="M22 38 L16 46" stroke="#4a7ab5" stroke-width="1" fill="none"/>
-          <path d="M52 38 L58 46" stroke="#4a7ab5" stroke-width="1" fill="none"/>
-          <path d="M14 48 Q6 46 5 56 Q4 68 14 70" stroke="#4a7ab5" stroke-width="1" fill="none"/>
-          <path d="M60 48 Q68 46 69 56 Q70 68 60 70" stroke="#4a7ab5" stroke-width="1" fill="none"/>
-          <path d="M20 88 L18 112" stroke="#4a7ab5" stroke-width="1.2" stroke-linecap="round"/>
-          <path d="M54 88 L56 112" stroke="#4a7ab5" stroke-width="1.2" stroke-linecap="round"/>
-          <path d="M28 88 L27 112" stroke="#4a7ab5" stroke-width="0.8" opacity="0.5"/>
-          <path d="M46 88 L47 112" stroke="#4a7ab5" stroke-width="0.8" opacity="0.5"/>
-          <path d="M5 56 L2 60 L5 64" stroke="#4a7ab5" stroke-width="0.8" fill="none" opacity="0.5"/>
-          <path d="M69 56 L72 60 L69 64" stroke="#4a7ab5" stroke-width="0.8" fill="none" opacity="0.5"/>
-          <path d="M28 30 L24 44" stroke="#4a7ab5" stroke-width="0.6" opacity="0.4"/>
-          <path d="M46 30 L50 44" stroke="#4a7ab5" stroke-width="0.6" opacity="0.4"/>
-          <circle cx="37" cy="59" r="3" stroke="#8b1a1a" stroke-width="0.8" fill="rgba(139,26,26,0.2)"/>
-          <path d="M37 56 L37 62 M34 59 L40 59" stroke="#8b1a1a" stroke-width="0.6" opacity="0.6"/>
+        <svg width="90" height="148" viewBox="0 0 90 148" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Cheveux -->
+          <path d="M28 18 Q30 8 45 6 Q60 8 62 18 Q65 12 62 8 Q54 2 45 2 Q36 2 28 8 Q25 12 28 18Z" fill="#4a7ab5" opacity="0.7"/>
+          <path d="M26 20 Q24 14 27 10" stroke="#6a9fd8" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <path d="M64 20 Q66 14 63 10" stroke="#6a9fd8" stroke-width="1.5" fill="none" opacity="0.5"/>
+          <!-- Tête (sans visage) -->
+          <ellipse cx="45" cy="22" rx="16" ry="18" fill="#1a1a26" stroke="#4a7ab5" stroke-width="1.2"/>
+          <!-- Cou -->
+          <rect x="40" y="38" width="10" height="8" fill="#1a1a26" stroke="#4a7ab5" stroke-width="0.8"/>
+          <!-- Épaules et torse -->
+          <path d="M18 52 Q18 44 28 42 L40 40 L50 40 L62 42 Q72 44 72 52 L74 95 Q74 100 68 100 L22 100 Q16 100 16 95 Z" fill="#12121a" stroke="#4a7ab5" stroke-width="1.2"/>
+          <!-- Col de veste -->
+          <path d="M38 40 L34 52 L45 48 L56 52 L52 40" fill="#1a1a26" stroke="#4a7ab5" stroke-width="0.8"/>
+          <!-- Ceinture -->
+          <rect x="20" y="82" width="50" height="6" rx="2" fill="#0a0a0f" stroke="#4a7ab5" stroke-width="0.8"/>
+          <rect x="42" y="81" width="6" height="8" rx="1" fill="#4a7ab5" opacity="0.6"/>
+          <!-- Bras gauche -->
+          <path d="M18 52 Q10 54 8 66 Q6 78 10 84 L16 82 Q14 74 16 64 L20 58Z" fill="#12121a" stroke="#4a7ab5" stroke-width="1"/>
+          <!-- Main gauche -->
+          <ellipse cx="10" cy="86" rx="5" ry="6" fill="#1a1a26" stroke="#4a7ab5" stroke-width="0.8"/>
+          <path d="M6 84 L5 90 M8 83 L7 91 M10 83 L10 91 M12 83 L13 90 M14 85 L15 89" stroke="#4a7ab5" stroke-width="0.6" opacity="0.5"/>
+          <!-- Bras droit -->
+          <path d="M72 52 Q80 54 82 66 Q84 78 80 84 L74 82 Q76 74 74 64 L70 58Z" fill="#12121a" stroke="#4a7ab5" stroke-width="1"/>
+          <!-- Main droite -->
+          <ellipse cx="80" cy="86" rx="5" ry="6" fill="#1a1a26" stroke="#4a7ab5" stroke-width="0.8"/>
+          <path d="M76 84 L75 90 M78 83 L77 91 M80 83 L80 91 M82 83 L83 90 M84 85 L85 89" stroke="#4a7ab5" stroke-width="0.6" opacity="0.5"/>
+          <!-- Détails veste - coutures -->
+          <path d="M30 44 L26 96" stroke="#4a7ab5" stroke-width="0.5" opacity="0.3"/>
+          <path d="M60 44 L64 96" stroke="#4a7ab5" stroke-width="0.5" opacity="0.3"/>
+          <!-- Épaulettes -->
+          <path d="M18 52 Q20 46 28 44" stroke="#6a9fd8" stroke-width="1.5" fill="none"/>
+          <path d="M72 52 Q70 46 62 44" stroke="#6a9fd8" stroke-width="1.5" fill="none"/>
+          <!-- Jambes -->
+          <path d="M22 100 L20 130 Q20 136 26 136 L36 136 Q40 136 40 130 L42 100Z" fill="#0a0a0f" stroke="#4a7ab5" stroke-width="1"/>
+          <path d="M68 100 L70 130 Q70 136 64 136 L54 136 Q50 136 50 130 L48 100Z" fill="#0a0a0f" stroke="#4a7ab5" stroke-width="1"/>
+          <!-- Genouillères -->
+          <rect x="22" y="112" width="16" height="8" rx="2" fill="#12121a" stroke="#4a7ab5" stroke-width="0.8"/>
+          <rect x="52" y="112" width="16" height="8" rx="2" fill="#12121a" stroke="#4a7ab5" stroke-width="0.8"/>
+          <!-- Bottes -->
+          <path d="M20 130 Q18 138 16 144 L36 144 Q38 140 36 136 L26 136Z" fill="#12121a" stroke="#4a7ab5" stroke-width="1"/>
+          <path d="M70 130 Q72 138 74 144 L54 144 Q52 140 54 136 L64 136Z" fill="#12121a" stroke="#4a7ab5" stroke-width="1"/>
+          <!-- Détails bottes -->
+          <path d="M18 140 L34 140" stroke="#4a7ab5" stroke-width="0.8" opacity="0.5"/>
+          <path d="M56 140 L72 140" stroke="#4a7ab5" stroke-width="0.8" opacity="0.5"/>
+          <!-- Cape (derrière) -->
+          <path d="M20 46 Q12 70 10 110 Q14 108 18 100 L22 100 L20 50Z" fill="#0a0a0f" stroke="#4a7ab5" stroke-width="0.8" opacity="0.6"/>
+          <path d="M70 46 Q78 70 80 110 Q76 108 72 100 L68 100 L70 50Z" fill="#0a0a0f" stroke="#4a7ab5" stroke-width="0.8" opacity="0.6"/>
+          <!-- Marque de sacrifice Berserk -->
+          <circle cx="45" cy="68" r="5" stroke="#8b1a1a" stroke-width="0.8" fill="rgba(139,26,26,0.15)"/>
+          <path d="M45 63 L45 73 M40 68 L50 68" stroke="#8b1a1a" stroke-width="0.6" opacity="0.7"/>
+          <circle cx="45" cy="68" r="2" fill="#8b1a1a" opacity="0.4"/>
+          <!-- Runes sur les bras -->
+          <path d="M11 68 L9 70 L11 72" stroke="#4a7ab5" stroke-width="0.6" opacity="0.4" fill="none"/>
+          <path d="M79 68 L81 70 L79 72" stroke="#4a7ab5" stroke-width="0.6" opacity="0.4" fill="none"/>
         </svg>
       </div>
       <div class="rank-badge" id="rank-badge">⚔ Fer IV</div>
@@ -146,6 +185,11 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
     <div>
       <div class="perso-name">Théo</div>
       <div class="perso-title" id="perso-title">Novice en éveil</div>
+
+      <div class="rank-inline">
+        <img class="rank-img-small" id="rank-img" src="" alt="" onerror="this.style.display='none'">
+        <span class="rank-name-text" id="rank-name-inline">Fer IV</span>
+      </div>
 
       <div class="level-block">
         <div class="level-top">
@@ -214,20 +258,62 @@ main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
 
 <script>
 const HABITS=[
-  {id:1,xp:80,stat:"Force",bronze:10},{id:2,xp:50,stat:"Force",bronze:10},
-  {id:3,xp:60,stat:"Vitalité",bronze:10},{id:4,xp:30,stat:"Vitalité",bronze:10},{id:5,xp:50,stat:"Vitalité",bronze:10},
-  {id:6,xp:70,stat:"Discipline",bronze:10},{id:7,xp:50,stat:"Discipline",bronze:15},{id:8,xp:40,stat:"Discipline",bronze:10},
-  {id:9,xp:60,stat:"Intelligence",bronze:10},{id:10,xp:40,stat:"Intelligence",bronze:10},{id:11,xp:30,stat:"Intelligence",bronze:10},
-  {id:12,xp:60,stat:"Mental",bronze:15},{id:13,xp:50,stat:"Mental",bronze:15},{id:14,xp:30,stat:"Mental",bronze:10},
-  {id:15,xp:-40,stat:"Discipline",bronze:0},{id:16,xp:-40,stat:"Mental",bronze:0},
+  {id:1,xp:80,stat:"Force"},{id:2,xp:50,stat:"Force"},
+  {id:3,xp:60,stat:"Vitalité"},{id:4,xp:30,stat:"Vitalité"},{id:5,xp:50,stat:"Vitalité"},
+  {id:6,xp:70,stat:"Discipline"},{id:7,xp:50,stat:"Discipline"},{id:8,xp:40,stat:"Discipline"},
+  {id:9,xp:60,stat:"Intelligence"},{id:10,xp:40,stat:"Intelligence"},{id:11,xp:30,stat:"Intelligence"},
+  {id:12,xp:60,stat:"Mental"},{id:13,xp:50,stat:"Mental"},{id:14,xp:30,stat:"Mental"},
+  {id:15,xp:-40,stat:"Discipline"},{id:16,xp:-40,stat:"Mental"},
 ];
 const STATS=[{id:"Force",icon:"💪"},{id:"Vitalité",icon:"🌿"},{id:"Discipline",icon:"⚡"},{id:"Intelligence",icon:"🧠"},{id:"Mental",icon:"🧘"}];
 const XP_TABLE=[100,100,100,100,100,100,100,100,100,200,200,200,200,200,200,200,200,200,200,350,350,350,350,350,350,350,350,350,350,500,500,500,500,500,500,500,500,500,500,750,750,750,750,750,750,750,750,750,750,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1500,1500,1500,1500,1500,1500,1500,1500,1500,1500,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000,3000];
-const RANKS=[{n:"Fer IV",m:1},{n:"Fer III",m:3},{n:"Fer II",m:5},{n:"Fer I",m:7},{n:"Bronze IV",m:9},{n:"Bronze III",m:11},{n:"Bronze II",m:13},{n:"Bronze I",m:15},{n:"Argent IV",m:17},{n:"Argent III",m:19},{n:"Argent II",m:21},{n:"Argent I",m:23},{n:"Or IV",m:25},{n:"Or III",m:27},{n:"Or II",m:29},{n:"Or I",m:31},{n:"Platine IV",m:33},{n:"Platine III",m:35},{n:"Platine II",m:37},{n:"Platine I",m:39},{n:"Diamant IV",m:41},{n:"Diamant III",m:43},{n:"Diamant II",m:45},{n:"Diamant I",m:47},{n:"Émeraude IV",m:49},{n:"Émeraude III",m:51},{n:"Émeraude II",m:53},{n:"Émeraude I",m:55},{n:"Maître",m:57},{n:"Grand Maître",m:71},{n:"Challenger",m:86}];
+
+const RANKS=[
+  {n:"Fer IV",m:1,img:"https://opgg-static.akamaized.net/images/medals_new/iron.png"},
+  {n:"Fer III",m:3,img:"https://opgg-static.akamaized.net/images/medals_new/iron.png"},
+  {n:"Fer II",m:5,img:"https://opgg-static.akamaized.net/images/medals_new/iron.png"},
+  {n:"Fer I",m:7,img:"https://opgg-static.akamaized.net/images/medals_new/iron.png"},
+  {n:"Bronze IV",m:9,img:"https://opgg-static.akamaized.net/images/medals_new/bronze.png"},
+  {n:"Bronze III",m:11,img:"https://opgg-static.akamaized.net/images/medals_new/bronze.png"},
+  {n:"Bronze II",m:13,img:"https://opgg-static.akamaized.net/images/medals_new/bronze.png"},
+  {n:"Bronze I",m:15,img:"https://opgg-static.akamaized.net/images/medals_new/bronze.png"},
+  {n:"Argent IV",m:17,img:"https://opgg-static.akamaized.net/images/medals_new/silver.png"},
+  {n:"Argent III",m:19,img:"https://opgg-static.akamaized.net/images/medals_new/silver.png"},
+  {n:"Argent II",m:21,img:"https://opgg-static.akamaized.net/images/medals_new/silver.png"},
+  {n:"Argent I",m:23,img:"https://opgg-static.akamaized.net/images/medals_new/silver.png"},
+  {n:"Or IV",m:25,img:"https://opgg-static.akamaized.net/images/medals_new/gold.png"},
+  {n:"Or III",m:27,img:"https://opgg-static.akamaized.net/images/medals_new/gold.png"},
+  {n:"Or II",m:29,img:"https://opgg-static.akamaized.net/images/medals_new/gold.png"},
+  {n:"Or I",m:31,img:"https://opgg-static.akamaized.net/images/medals_new/gold.png"},
+  {n:"Platine IV",m:33,img:"https://opgg-static.akamaized.net/images/medals_new/platinum.png"},
+  {n:"Platine III",m:35,img:"https://opgg-static.akamaized.net/images/medals_new/platinum.png"},
+  {n:"Platine II",m:37,img:"https://opgg-static.akamaized.net/images/medals_new/platinum.png"},
+  {n:"Platine I",m:39,img:"https://opgg-static.akamaized.net/images/medals_new/platinum.png"},
+  {n:"Diamant IV",m:41,img:"https://opgg-static.akamaized.net/images/medals_new/diamond.png"},
+  {n:"Diamant III",m:43,img:"https://opgg-static.akamaized.net/images/medals_new/diamond.png"},
+  {n:"Diamant II",m:45,img:"https://opgg-static.akamaized.net/images/medals_new/diamond.png"},
+  {n:"Diamant I",m:47,img:"https://opgg-static.akamaized.net/images/medals_new/diamond.png"},
+  {n:"Émeraude IV",m:49,img:"https://opgg-static.akamaized.net/images/medals_new/emerald.png"},
+  {n:"Émeraude III",m:51,img:"https://opgg-static.akamaized.net/images/medals_new/emerald.png"},
+  {n:"Émeraude II",m:53,img:"https://opgg-static.akamaized.net/images/medals_new/emerald.png"},
+  {n:"Émeraude I",m:55,img:"https://opgg-static.akamaized.net/images/medals_new/emerald.png"},
+  {n:"Maître",m:57,img:"https://opgg-static.akamaized.net/images/medals_new/master.png"},
+  {n:"Grand Maître",m:71,img:"https://opgg-static.akamaized.net/images/medals_new/grandmaster.png"},
+  {n:"Challenger",m:86,img:"https://opgg-static.akamaized.net/images/medals_new/challenger.png"},
+];
+
+const STAT_TITLES={
+  Force:["Novice","Apprenti","Guerrier","Combattant","Champion","Berserker","Titan","Légende","Demi-dieu","Invincible"],
+  Vitalité:["Fragile","Résistant","Robuste","Endurant","Vital","Inébranlable","Immortel","Titan","Ancestral","Éternel"],
+  Discipline:["Distrait","Focalisé","Discipliné","Rigoureux","Implacable","Maître","Ascète","Sage","Illuminé","Transcendant"],
+  Intelligence:["Curieux","Étudiant","Érudit","Savant","Expert","Maître","Génie","Oracle","Prophète","Omniscient"],
+  Mental:["Fragile","Équilibré","Serein","Résolu","Inébranlable","Maître de soi","Ascète","Sage","Éveillé","Transcendant"],
+};
+
 const TITLES=["Novice en éveil","Apprenti du destin","Porteur d'espoir","Marcheur des ombres","Gardien de l'aube","Briseur de chaînes","Lame du serment","Élu des étoiles","Maître de soi","Challenger éternel"];
 
-function getStorageKey(){const d=new Date();return'habits_'+d.getFullYear()+'_'+d.getMonth()+'_'+d.getDate();}
-function loadChecked(){try{const d=localStorage.getItem(getStorageKey());return d?new Set(JSON.parse(d)):new Set();}catch(e){return new Set();}}
+function getKey(){const d=new Date();return'habits_'+d.getFullYear()+'_'+d.getMonth()+'_'+d.getDate();}
+function loadChecked(){try{const d=localStorage.getItem(getKey());return d?new Set(JSON.parse(d)):new Set();}catch(e){return new Set();}}
 
 function getTotalXP(stat,checked){let x=0;HABITS.forEach(h=>{if(h.stat===stat&&checked.has(h.id))x+=h.xp;});return Math.max(0,x);}
 
@@ -241,8 +327,9 @@ function getLevelInfo(xp){
   return{lvl,current,needed,pct,rem};
 }
 
-function getRank(lvl){let r=RANKS[0];for(let x of RANKS){if(lvl>=x.m)r=x;}return r.n;}
+function getRank(lvl){let r=RANKS[0];for(let x of RANKS){if(lvl>=x.m)r=x;}return r;}
 function getTitle(lvl){return TITLES[Math.min(Math.floor((lvl-1)/10),TITLES.length-1)];}
+function getStatTitle(stat,lvl){const arr=STAT_TITLES[stat]||[];return arr[Math.min(Math.floor((lvl-1)/10),arr.length-1)]||'';}
 
 function render(){
   const checked=loadChecked();
@@ -250,12 +337,15 @@ function render(){
   STATS.forEach(s=>{totalXP+=getTotalXP(s.id,checked);});
   const avgXP=Math.round(totalXP/STATS.length);
   const gen=getLevelInfo(avgXP);
+  const rank=getRank(gen.lvl);
 
   document.getElementById('gen-level').textContent=gen.lvl;
   document.getElementById('gen-bar').style.width=gen.pct+'%';
   document.getElementById('gen-xp').textContent=avgXP+' XP';
   document.getElementById('gen-xp-next').textContent=gen.rem+' XP → niv.'+(gen.lvl+1);
-  document.getElementById('rank-badge').textContent='⚔ '+getRank(gen.lvl);
+  document.getElementById('rank-badge').textContent='⚔ '+rank.n;
+  document.getElementById('rank-img').src=rank.img;
+  document.getElementById('rank-name-inline').textContent=rank.n;
   document.getElementById('perso-title').textContent=getTitle(gen.lvl);
 
   const list=document.getElementById('stats-list');
@@ -263,9 +353,19 @@ function render(){
   STATS.forEach(s=>{
     const xp=getTotalXP(s.id,checked);
     const info=getLevelInfo(xp);
+    const statTitle=getStatTitle(s.id,info.lvl);
     const row=document.createElement('div');
     row.className='stat-row';
-    row.innerHTML=`<span class="stat-icon">${s.icon}</span><span class="stat-name">${s.id}</span><div style="flex:1"><div class="bar-track"><div class="bar-blue" style="width:${info.pct}%"></div></div><div class="stat-meta"><span>Niv.${info.lvl}</span><span style="color:var(--xp-light)">${xp} XP · ${info.rem} restants</span></div></div>`;
+    row.innerHTML=`
+      <span class="stat-icon">${s.icon}</span>
+      <span class="stat-name">${s.id}</span>
+      <div style="flex:1">
+        <div class="bar-track"><div class="bar-blue" style="width:${info.pct}%"></div></div>
+        <div class="stat-meta">
+          <span>Niv.${info.lvl} <span class="stat-title-text">${statTitle}</span></span>
+          <span style="color:var(--xp-light)">${xp} XP · ${info.rem} rest.</span>
+        </div>
+      </div>`;
     list.appendChild(row);
   });
 
