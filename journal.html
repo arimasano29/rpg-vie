@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Journal — RPG de Vie</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a26;
+  --border:#2a2a3a;--border-active:#9b1a1a;
+  --red:#9b1a1a;--red-light:#c0392b;--red-glow:#e74c3c;
+  --xp:#7c4dff;--xp-light:#9c6fff;
+  --bronze:#cd7f32;--silver:#c0c0c0;--gold:#ffd700;
+  --text:#e8e8f0;--text2:#888899;
+  --green:#2d6a2d;--green-light:#4a9e4a;
+}
+body{background:var(--bg);color:var(--text);font-size:16px;line-height:1.5;font-family:'Rajdhani',sans-serif;font-weight:500;min-height:100vh;padding-bottom:80px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--red);border-radius:2px}
+
+/* FOND FLOUTÉ */
+body::before{content:'';position:fixed;inset:0;background:url('bg6.jpg') center/cover no-repeat;filter:blur(18px) brightness(0.18);z-index:-1;transform:scale(1.05)}
+
+.nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:54px;background:rgba(10,10,15,0.95);border-bottom:1px solid #1a0a0a;position:sticky;top:0;z-index:100;backdrop-filter:blur(8px)}
+.nav-logo{font-family:'Cinzel',serif;font-size:16px;color:var(--red-glow);letter-spacing:2px}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:14px;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;padding-bottom:2px}
+.nav-links a:hover,.nav-links a.active{color:var(--red-glow);border-bottom:1px solid var(--red)}
+
+.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:62px;background:rgba(10,10,15,0.95);border-top:1px solid #1a0a0a;z-index:100;backdrop-filter:blur(8px);justify-content:space-around;align-items:center}
+.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text2);text-decoration:none;font-size:10px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
+.nav-mobile a.active,.nav-mobile a:hover{color:var(--red-glow)}
+.nav-icon{font-size:18px}
+
+main{max-width:860px;margin:0 auto;padding:1.25rem 1rem}
+
+.page-header{margin-bottom:1.25rem}
+.page-title{font-family:'Cinzel',serif;font-size:20px;color:var(--text);letter-spacing:1px;margin-bottom:4px}
+.page-sub{font-size:14px;color:var(--text2)}
+
+.card{background:rgba(18,18,26,0.85);border:1px solid #1a0a0a;border-radius:8px;padding:1.25rem;margin-bottom:10px;position:relative;overflow:hidden;backdrop-filter:blur(4px)}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--red),transparent)}
+.card-title{font-family:'Cinzel',serif;font-size:13px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:14px}
+
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.filter-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 14px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:13px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all 0.2s}
+.filter-btn:hover{border-color:var(--red);color:var(--red-glow)}
+.filter-btn.active{background:rgba(155,26,26,0.15);border-color:var(--red);color:var(--red-glow)}
+
+.journal-list{display:flex;flex-direction:column;gap:8px}
+
+.journal-entry{background:rgba(26,18,18,0.7);border:1px solid #1a0a0a;border-radius:6px;padding:12px 14px;display:flex;align-items:flex-start;gap:12px;position:relative;transition:border-color 0.2s}
+.journal-entry:hover{border-color:var(--red)}
+.entry-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.entry-content{flex:1;min-width:0}
+.entry-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:2px}
+.entry-detail{font-size:13px;color:var(--text2)}
+.entry-date{font-size:11px;color:var(--text2);margin-top:4px;letter-spacing:0.5px}
+.entry-badge{display:inline-block;font-size:11px;padding:1px 8px;border-radius:3px;border:1px solid;margin-right:6px;margin-top:4px}
+.badge-xp{border-color:var(--xp);color:var(--xp-light);background:rgba(124,77,255,0.1)}
+.badge-bronze{border-color:var(--bronze);color:var(--bronze);background:rgba(205,127,50,0.1)}
+.badge-gold{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,0.1)}
+.badge-quest{border-color:var(--red);color:var(--red-glow);background:rgba(155,26,26,0.1)}
+.badge-shop{border-color:var(--silver);color:var(--silver);background:rgba(192,192,192,0.1)}
+.badge-level{border-color:var(--green-light);color:var(--green-light);background:rgba(74,158,74,0.1)}
+
+.delete-btn{background:none;border:none;color:var(--text2);cursor:pointer;font-size:14px;padding:2px 6px;border-radius:3px;transition:color 0.2s;flex-shrink:0}
+.delete-btn:hover{color:var(--red-glow)}
+
+.empty-state{text-align:center;padding:3rem 1rem;color:var(--text2)}
+.empty-icon{font-size:40px;margin-bottom:12px}
+.empty-text{font-family:'Cinzel',serif;font-size:14px;letter-spacing:1px}
+.empty-sub{font-size:13px;margin-top:6px}
+
+.stats-bar{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:1rem}
+.stat-pill{background:rgba(18,18,26,0.85);border:1px solid #1a0a0a;border-radius:6px;padding:8px 12px;text-align:center}
+.stat-pill-val{font-family:'Cinzel',serif;font-size:18px;margin-bottom:2px}
+.stat-pill-label{font-size:11px;color:var(--text2);letter-spacing:0.5px;text-transform:uppercase}
+
+.clear-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:6px 16px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all 0.2s}
+.clear-btn:hover{border-color:var(--red-glow);color:var(--red-glow)}
+
+@media(max-width:600px){
+  .nav-desktop{display:none}
+  .nav-mobile{display:flex}
+  .stats-bar{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav-desktop">
+  <span class="nav-logo">⚔ RPG DE VIE</span>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="tracker.html">Quêtes du jour</a>
+    <a href="quetes.html">Quêtes</a>
+    <a href="shop.html">Forgeron</a>
+    <a href="rangs.html">Rangs</a>
+    <a href="journal.html" class="active">Journal</a>
+  </div>
+</nav>
+
+<main>
+
+<div class="page-header">
+  <div class="page-title">📖 Journal</div>
+  <div class="page-sub">Historique de ta progression</div>
+</div>
+
+<div class="stats-bar" id="stats-bar"></div>
+
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <div class="card-title" style="margin-bottom:0">Historique</div>
+    <button class="clear-btn" onclick="clearAll()">Tout effacer</button>
+  </div>
+  <div class="filters" id="filters"></div>
+  <div class="journal-list" id="journal-list"></div>
+</div>
+
+</main>
+
+<nav class="nav-mobile">
+  <a href="index.html"><span class="nav-icon">🏠</span>Accueil</a>
+  <a href="tracker.html"><span class="nav-icon">⚔</span>Quêtes</a>
+  <a href="quetes.html"><span class="nav-icon">🎯</span>Objectifs</a>
+  <a href="shop.html"><span class="nav-icon">🛒</span>Shop</a>
+  <a href="rangs.html"><span class="nav-icon">👑</span>Rangs</a>
+  <a href="journal.html" class="active"><span class="nav-icon">📖</span>Journal</a>
+</nav>
+
+<script>
+const FILTERS=[
+  {id:'all',label:'Tout'},
+  {id:'habit',label:'Habitudes'},
+  {id:'quest',label:'Quêtes'},
+  {id:'shop',label:'Achats'},
+  {id:'level',label:'Niveaux'},
+  {id:'bronze',label:'Bronze'},
+];
+
+const TYPE_CONFIG={
+  habit:{icon:'⚔',label:'Habitude accomplie',badgeClass:'badge-xp'},
+  quest:{icon:'🎯',label:'Quête accomplie',badgeClass:'badge-quest'},
+  shop:{icon:'🛒',label:'Achat au forgeron',badgeClass:'badge-shop'},
+  level:{icon:'⬆',label:'Niveau atteint',badgeClass:'badge-level'},
+  bronze:{icon:'🟤',label:'Bronze gagné',badgeClass:'badge-bronze'},
+  malus:{icon:'❌',label:'Mauvaise habitude',badgeClass:'badge-xp'},
+};
+
+let currentFilter='all';
+
+function loadEntries(){
+  try{const d=localStorage.getItem('journal_entries');return d?JSON.parse(d):[];}
+  catch(e){return[];}
+}
+
+function saveEntries(entries){
+  try{localStorage.setItem('journal_entries',JSON.stringify(entries));}
+  catch(e){}
+}
+
+function deleteEntry(id){
+  const entries=loadEntries().filter(e=>e.id!==id);
+  saveEntries(entries);
+  render();
+}
+
+function clearAll(){
+  if(!confirm('Effacer tout le journal ?'))return;
+  saveEntries([]);
+  render();
+}
+
+function formatDate(ts){
+  const d=new Date(ts);
+  const days=['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+  const months=['jan','fév','mar','avr','mai','jun','jul','aoû','sep','oct','nov','déc'];
+  return `${days[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} à ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}`;
+}
+
+function renderFilters(){
+  const el=document.getElementById('filters');
+  el.innerHTML='';
+  FILTERS.forEach(f=>{
+    const btn=document.createElement('button');
+    btn.className='filter-btn'+(currentFilter===f.id?' active':'');
+    btn.textContent=f.label;
+    btn.onclick=()=>{currentFilter=f.id;render();};
+    el.appendChild(btn);
+  });
+}
+
+function renderStats(){
+  const entries=loadEntries();
+  const totalXP=entries.filter(e=>e.type==='habit'||e.type==='quest').reduce((s,e)=>s+(e.xp||0),0);
+  const totalBronze=entries.filter(e=>e.bronze>0).reduce((s,e)=>s+(e.bronze||0),0);
+  const totalQuests=entries.filter(e=>e.type==='quest').length;
+  const totalHabits=entries.filter(e=>e.type==='habit').length;
+  const totalPurchases=entries.filter(e=>e.type==='shop').length;
+  const bar=document.getElementById('stats-bar');
+  bar.innerHTML=`
+    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--xp-light)">${totalXP}</div><div class="stat-pill-label">XP total</div></div>
+    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--bronze)">${totalBronze}</div><div class="stat-pill-label">Bronze gagné</div></div>
+    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--red-glow)">${totalHabits}</div><div class="stat-pill-label">Habitudes</div></div>
+    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--gold)">${totalQuests}</div><div class="stat-pill-label">Quêtes</div></div>
+    <div class="stat-pill"><div class="stat-pill-val" style="color:var(--silver)">${totalPurchases}</div><div class="stat-pill-label">Achats</div></div>
+  `;
+}
+
+function renderList(){
+  const allEntries=loadEntries();
+  const entries=currentFilter==='all'?allEntries:allEntries.filter(e=>e.type===currentFilter);
+  const list=document.getElementById('journal-list');
+  if(entries.length===0){
+    list.innerHTML=`<div class="empty-state"><div class="empty-icon">📜</div><div class="empty-text">Aucune entrée</div><div class="empty-sub">${currentFilter==='all'?'Commence à cocher des habitudes pour remplir ton journal':'Aucune entrée de ce type'}</div></div>`;
+    return;
+  }
+  list.innerHTML='';
+  const sorted=[...entries].reverse();
+  sorted.forEach(e=>{
+    const cfg=TYPE_CONFIG[e.type]||TYPE_CONFIG.habit;
+    const div=document.createElement('div');
+    div.className='journal-entry';
+    let badges='';
+    if(e.xp)badges+=`<span class="entry-badge badge-xp">${e.xp>0?'+':''}${e.xp} XP</span>`;
+    if(e.bronze)badges+=`<span class="entry-badge badge-bronze">+${e.bronze} Bronze</span>`;
+    if(e.level)badges+=`<span class="entry-badge badge-level">Niveau ${e.level}</span>`;
+    if(e.cost)badges+=`<span class="entry-badge badge-shop">-${e.cost} Bronze</span>`;
+    div.innerHTML=`
+      <div class="entry-icon">${cfg.icon}</div>
+      <div class="entry-content">
+        <div class="entry-title">${e.title}</div>
+        ${e.detail?`<div class="entry-detail">${e.detail}</div>`:''}
+        <div>${badges}</div>
+        <div class="entry-date">${formatDate(e.ts)}</div>
+      </div>
+      <button class="delete-btn" onclick="deleteEntry('${e.id}')" title="Supprimer">✕</button>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function render(){
+  renderFilters();
+  renderStats();
+  renderList();
+}
+
+// Listen for journal updates from other pages
+window.addEventListener('storage',e=>{
+  if(e.key==='journal_entries')render();
+});
+
+render();
+
+// Helper function for other pages to add entries
+window.addJournalEntry=function(type,title,detail,extras={}){
+  const entries=loadEntries();
+  const entry={
+    id:Date.now().toString(),
+    type,title,detail,
+    ts:Date.now(),
+    ...extras
+  };
+  entries.push(entry);
+  saveEntries(entries);
+};
+</script>
+</body>
+</html>
