@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forgeron — RPG de Vie</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a26;
+  --border:#2a2a3a;--border-active:#4a7ab5;
+  --blue:#4a7ab5;--blue-light:#6a9fd8;
+  --xp:#7c4dff;--xp-light:#9c6fff;
+  --bronze:#cd7f32;--silver:#c0c0c0;--gold:#ffd700;
+  --text:#e8e8f0;--text2:#888899;
+  --green:#2d6a2d;--green-light:#4a9e4a;
+  --red:#8b1a1a;--red-light:#c0392b;
+  --common:#888899;--rare:#4a90d9;--epic:#9b59b6;--legendary:#f39c12;--transcendent:#e74c3c;
+}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;padding-bottom:80px}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border-active);border-radius:2px}
+
+.nav-desktop{display:flex;align-items:center;justify-content:space-between;padding:0 2rem;height:52px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Cinzel',serif;font-size:15px;color:var(--blue-light);letter-spacing:2px}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{color:var(--text2);text-decoration:none;font-size:12px;letter-spacing:1px;text-transform:uppercase;transition:color 0.2s;padding-bottom:2px}
+.nav-links a:hover,.nav-links a.active{color:var(--blue-light);border-bottom:1px solid var(--blue)}
+
+.nav-mobile{display:none;position:fixed;bottom:0;left:0;right:0;height:60px;background:var(--bg2);border-top:1px solid var(--border);z-index:100;justify-content:space-around;align-items:center}
+.nav-mobile a{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text2);text-decoration:none;font-size:9px;letter-spacing:0.5px;text-transform:uppercase;transition:color 0.2s}
+.nav-mobile a.active,.nav-mobile a:hover{color:var(--blue-light)}
+.nav-icon{font-size:16px}
+
+main{max-width:960px;margin:0 auto;padding:1.25rem 1rem}
+
+.page-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.25rem;flex-wrap:wrap;gap:10px}
+.page-title{font-family:'Cinzel',serif;font-size:18px;color:var(--text);letter-spacing:1px;margin-bottom:4px}
+.page-sub{font-size:12px;color:var(--text2)}
+
+.currency-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.cur-item{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:5px 12px;display:flex;align-items:center;gap:6px}
+.cur-dot{width:8px;height:8px;border-radius:50%}
+.cur-val{font-family:'Cinzel',serif;font-size:14px}
+.cur-label{font-size:10px;color:var(--text2);letter-spacing:1px}
+
+.equipped-section{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.25rem;margin-bottom:1rem;position:relative;overflow:hidden}
+.equipped-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.section-label{font-family:'Cinzel',serif;font-size:11px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:12px}
+.slots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px}
+.slot{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;cursor:pointer;transition:border-color 0.2s;position:relative;min-height:90px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.slot:hover{border-color:var(--border-active)}
+.slot.equipped{border-color:var(--gold)}
+.slot-icon{font-size:20px}
+.slot-name{font-size:9px;color:var(--text2);letter-spacing:0.5px;text-transform:uppercase}
+.slot-item-name{font-size:10px;color:var(--gold);line-height:1.2;text-align:center}
+.slot-bonus{font-size:9px;color:var(--green-light)}
+.unequip-btn{position:absolute;top:3px;right:3px;background:none;border:none;color:var(--red-light);cursor:pointer;font-size:10px;padding:1px 3px}
+
+.tabs{display:flex;gap:4px;margin-bottom:1rem;flex-wrap:wrap}
+.tab{background:none;border:1px solid var(--border);border-radius:6px;padding:6px 14px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:11px;letter-spacing:1px;cursor:pointer;text-transform:uppercase;transition:all 0.2s}
+.tab:hover{border-color:var(--border-active);color:var(--blue-light)}
+.tab.active{background:var(--bg2);border-color:var(--border-active);color:var(--blue-light)}
+
+.items-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+
+.item-card{background:var(--bg2);border-radius:8px;padding:10px;text-align:center;position:relative;overflow:hidden;transition:transform 0.15s,border-color 0.2s;cursor:pointer}
+.item-card:hover{transform:translateY(-2px)}
+.item-card.owned{opacity:1}
+.item-card.equipped-item{box-shadow:0 0 0 1px var(--gold)}
+
+.rarity-common{border:1px solid var(--common)}
+.rarity-rare{border:1px solid var(--rare)}
+.rarity-epic{border:1px solid var(--epic)}
+.rarity-legendary{border:1px solid var(--legendary)}
+.rarity-transcendent{border:1px solid var(--transcendent)}
+
+.item-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.rarity-common::before{background:var(--common)}
+.rarity-rare::before{background:var(--rare)}
+.rarity-epic::before{background:var(--epic)}
+.rarity-legendary::before{background:linear-gradient(90deg,transparent,var(--legendary),transparent)}
+.rarity-transcendent::before{background:linear-gradient(90deg,transparent,var(--transcendent),transparent)}
+
+.item-img{width:52px;height:52px;object-fit:contain;margin:0 auto 6px;display:block}
+.item-name{font-family:'Cinzel',serif;font-size:10px;line-height:1.3;margin-bottom:4px;min-height:28px;display:flex;align-items:center;justify-content:center}
+.item-bonus{font-size:9px;color:var(--green-light);margin-bottom:6px;min-height:14px}
+.item-price{font-size:10px;margin-bottom:6px}
+.item-rarity{font-size:8px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+
+.buy-btn{width:100%;background:none;border:1px solid var(--border);border-radius:4px;padding:4px;color:var(--text2);font-family:'Rajdhani',sans-serif;font-size:10px;letter-spacing:0.5px;cursor:pointer;transition:all 0.2s;text-transform:uppercase}
+.buy-btn:hover{border-color:var(--gold);color:var(--gold)}
+.buy-btn.owned-btn{border-color:var(--blue);color:var(--blue-light)}
+.buy-btn.owned-btn:hover{border-color:var(--gold);color:var(--gold)}
+.buy-btn.equipped-btn{border-color:var(--gold);color:var(--gold)}
+.buy-btn:disabled{opacity:0.4;cursor:not-allowed}
+
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--border-active);border-radius:6px;padding:8px 18px;font-size:12px;color:var(--text);z-index:400;animation:toastIn 0.3s ease,toastOut 0.4s ease 1.8s forwards;white-space:nowrap}
+@keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+@keyframes toastOut{from{opacity:1}to{opacity:0}}
+
+@media(max-width:600px){
+  .nav-desktop{display:none}
+  .nav-mobile{display:flex}
+  .items-grid{grid-template-columns:repeat(2,1fr)}
+  .slots-grid{grid-template-columns:repeat(4,1fr)}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav-desktop">
+  <span class="nav-logo">⚔ RPG DE VIE</span>
+  <div class="nav-links">
+    <a href="index.html">Accueil</a>
+    <a href="tracker.html">Quêtes du jour</a>
+    <a href="quetes.html">Quêtes</a>
+    <a href="shop.html" class="active">Forgeron</a>
+    <a href="rangs.html">Rangs</a>
+  </div>
+</nav>
+
+<main>
+
+<div class="page-header">
+  <div>
+    <div class="page-title">🛒 Le Forgeron</div>
+    <div class="page-sub">Achète et équipe ton personnage</div>
+  </div>
+  <div class="currency-bar" id="currency-bar"></div>
+</div>
+
+<div class="equipped-section">
+  <div class="section-label">Équipement actuel</div>
+  <div class="slots-grid" id="slots-grid"></div>
+</div>
+
+<div class="tabs" id="tabs"></div>
+<div class="items-grid" id="items-grid"></div>
+
+</main>
+
+<nav class="nav-mobile">
+  <a href="index.html"><span class="nav-icon">🏠</span>Accueil</a>
+  <a href="tracker.html"><span class="nav-icon">⚔</span>Quêtes</a>
+  <a href="quetes.html"><span class="nav-icon">🎯</span>Objectifs</a>
+  <a href="shop.html" class="active"><span class="nav-icon">🛒</span>Shop</a>
+  <a href="rangs.html"><span class="nav-icon">👑</span>Rangs</a>
+</nav>
+
+<script>
+const SLOTS=[
+  {id:"head",name:"Tête",icon:"🪖"},
+  {id:"body",name:"Corps",icon:"🧥"},
+  {id:"weapon1",name:"Arme 1",icon:"⚔️"},
+  {id:"weapon2",name:"Arme 2",icon:"🛡️"},
+  {id:"feet",name:"Pieds",icon:"👢"},
+  {id:"ring1",name:"Anneau 1",icon:"💍"},
+  {id:"ring2",name:"Anneau 2",icon:"💍"},
+  {id:"amulet",name:"Amulette",icon:"📿"},
+  {id:"cape",name:"Cape",icon:"🧣"},
+];
+
+const ITEMS=[
+  // TÊTE
+  {id:1,name:"Casque de Doran",slot:"head",rarity:"common",price:500,currency:"bronze",bonus:"+5% XP Force",img:"https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/bc9f19b522a55901203db94e9c6bf708b3e24a91-512x512.jpg"},
+  {id:2,name:"Capuche du Spectre",slot:"head",rarity:"rare",price:5000,currency:"bronze",bonus:"+8% XP Mental",img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjdQ7-FNqY91gYlts5ADgFYamvU8Hc9ypsoA&s"},
+  {id:3,name:"Masque Hanté",slot:"head",rarity:"rare",price:5000,currency:"bronze",bonus:"+8% XP Discipline",img:"https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/ad7baf5a34cccaa44b34dd404d700f98a9d5c5e4-512x512.png"},
+  {id:4,name:"Diadème des Murmures",slot:"head",rarity:"epic",price:50,currency:"silver",bonus:"+10% XP Intelligence",img:"https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/5e0aaa681c7fcaaeffd075cdefc3e5dd2bea820c-512x512.png"},
+  {id:5,name:"Jak'sho",slot:"head",rarity:"epic",price:50,currency:"silver",bonus:"+10% XP Vitalité",img:"https://leagueofitems.com/images/items/256/6665.webp"},
+  {id:6,name:"Tourment de Liandry",slot:"head",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Intelligence",img:"https://static.wikia.nocookie.net/leagueoflegends/images/9/9c/Tourment_de_Liandry_Obj.png/revision/latest?cb=20210518163947&path-prefix=fr"},
+  {id:7,name:"Volonté Cosmique",slot:"head",rarity:"epic",price:50,currency:"silver",bonus:"+10% XP global",img:"https://static.wikia.nocookie.net/leagueoflegends/images/8/80/Volonté_Cosmique_Obj.png/revision/latest?cb=20210506170013&path-prefix=fr"},
+  {id:8,name:"Masque Abyssal",slot:"head",rarity:"legendary",price:1,currency:"gold",bonus:"+15% XP global",img:"https://xurima.com/uploads/8020_98e6b9db0a.webp"},
+  {id:9,name:"Voeu du Chevalier",slot:"head",rarity:"legendary",price:1,currency:"gold",bonus:"+20% Bronze gagné",img:"https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/a9931112ca732ad8101f99ef08d971c5c504bb74-512x512.png"},
+  {id:10,name:"Coiffe de Rabadon",slot:"head",rarity:"transcendent",price:5,currency:"gold",bonus:"+25% XP Intelligence",img:"https://static.wikia.nocookie.net/leagueoflegends/images/7/7c/Coiffe_de_Rabadon_Obj.png/revision/latest?cb=20210518190042&path-prefix=fr"},
+  // CORPS
+  {id:11,name:"Armure d'Étoffe",slot:"body",rarity:"common",price:500,currency:"bronze",bonus:"+5% XP Vitalité",img:"https://wiki.leagueoflegends.com/en-us/images/Cloth_Armor_WR_item.png?d7e6c"},
+  {id:12,name:"Gilet de Ronce",slot:"body",rarity:"common",price:500,currency:"bronze",bonus:"+5% XP Force",img:"https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/bc4628af4c17200026292259f0776998282dbf8e5-512x512.jpg"},
+  {id:13,name:"Mailles du Gardien",slot:"body",rarity:"rare",price:5000,currency:"bronze",bonus:"+8% XP Force",img:"https://static.wikia.nocookie.net/leagueoflegends/images/c/c5/Mailles_du_gardien_Obj.png/revision/latest?cb=20210518185107&path-prefix=fr"},
+  {id:14,name:"Cotte Épineuse",slot:"body",rarity:"rare",price:5000,currency:"bronze",bonus:"+8% XP Discipline",img:"https://static.wikia.nocookie.net/leagueoflegends/images/8/8f/Cotte_épineuse_Obj.png/revision/latest?cb=20210518192118&path-prefix=fr"},
+  {id:15,name:"Corps Spirituel",slot:"body",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Mental",img:"https://static.wikia.nocookie.net/leagueoflegends/images/0/07/Visage_Spirituel_Obj.png/revision/latest?cb=20210518190529&path-prefix=fr"},
+  {id:16,name:"Voile de la Banshee",slot:"body",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Mental",img:"https://static.wikia.nocookie.net/leagueoflegends/images/2/24/Voile_de_la_Banshee_Obj.png/revision/latest?cb=20210518190118&path-prefix=fr"},
+  {id:17,name:"Armure Sanguine",slot:"body",rarity:"epic",price:50,currency:"silver",bonus:"+12% Bronze gagné",img:"https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/4dfded60c670e9702fb5b1c95a34231b05e3d546-512x512.png"},
+  {id:18,name:"Plaque du Mort",slot:"body",rarity:"legendary",price:1,currency:"gold",bonus:"+15% XP global",img:"https://static.wikia.nocookie.net/leagueoflegends/images/9/9f/Plaque_du_Mort_Obj.png/revision/latest?cb=20210518190501&path-prefix=fr"},
+  {id:19,name:"Force de la Nature",slot:"body",rarity:"legendary",price:1,currency:"gold",bonus:"+18% XP Vitalité",img:"https://static.wikia.nocookie.net/leagueoflegends/images/f/f2/Force_de_la_nature_Obj.png/revision/latest?cb=20210518193147&path-prefix=fr"},
+  {id:20,name:"Armure de Warmog",slot:"body",rarity:"transcendent",price:5,currency:"gold",bonus:"+25% XP Vitalité",img:"https://pbs.twimg.com/media/HFDrxTaXAAAWpDG.png"},
+  // ARMES
+  {id:21,name:"Lame de Doran",slot:"weapon1",rarity:"common",price:500,currency:"bronze",bonus:"+5% XP Force",img:"https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/9d0da7bd162d79affa4775815f057ee322036bb5-512x512.png"},
+  {id:22,name:"Bouclier de Doran",slot:"weapon2",rarity:"common",price:500,currency:"bronze",bonus:"+5% XP Vitalité",img:"https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/864bf93a1fa6fe8d77401a8859eee9b89201be62-512x512.png"},
+  {id:23,name:"Épée Longue",slot:"weapon1",rarity:"common",price:500,currency:"bronze",bonus:"+5% XP Discipline",img:"https://static.wikia.nocookie.net/leagueoflegends/images/3/31/Épée_Longue_Obj.png/revision/latest?cb=20210518194933&path-prefix=fr"},
+  {id:24,name:"Pioche",slot:"weapon1",rarity:"common",price:500,currency:"bronze",bonus:"+5% XP Force",img:"https://static.wikia.nocookie.net/leagueoflegends/images/6/6a/Pioche_Obj.png/revision/latest?cb=20210518194337&path-prefix=fr"},
+  {id:25,name:"Dague Dentelée",slot:"weapon1",rarity:"rare",price:5000,currency:"bronze",bonus:"+8% XP Force",img:"https://preview.redd.it/aram-shenanigans-lethality-crit-vi-v0-obbp0tkawixa1.jpg?width=512&format=pjpg&auto=webp&s=c560e2f4a45469904d0672067b469bfa2ec3e0f7"},
+  {id:26,name:"Excalibur",slot:"weapon1",rarity:"rare",price:5000,currency:"bronze",bonus:"+8% XP global",img:"https://static.wikia.nocookie.net/leagueoflegends/images/f/f5/Brillance_Obj.png/revision/latest?cb=20210518185651&path-prefix=fr"},
+  {id:27,name:"Chasseur de Monstres",slot:"weapon1",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Force",img:"https://xurima.com/uploads/2512_81b660f36f.webp"},
+  {id:28,name:"Arc de la Fin",slot:"weapon1",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Discipline",img:"https://leagueofitems.com/images/items/256/3302.webp"},
+  {id:29,name:"Lame Spectrale",slot:"weapon1",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Discipline",img:"https://static.wikia.nocookie.net/leagueoflegends/images/5/5c/Lame_Spectre_de_Youmuu_Obj.png/revision/latest?cb=20210518190647&path-prefix=fr"},
+  {id:30,name:"Aube et Crépuscule",slot:"weapon1",rarity:"epic",price:50,currency:"silver",bonus:"+10% XP global",img:"https://leagueofitems.com/images/items/256/2510.webp"},
+  {id:31,name:"Danseur Fantôme",slot:"weapon2",rarity:"epic",price:50,currency:"silver",bonus:"+15% XP Mental",img:"https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/19fcd337b4e5c252f777482ec0be90e0237ac66f-512x512.png"},
+  {id:32,name:"Lame Enragée",slot:"weapon1",rarity:"legendary",price:1,currency:"gold",bonus:"+18% Bronze gagné",img:"https://static.wikia.nocookie.net/leagueoflegends/images/0/0f/Lame_Enragée_de_Guinsoo_Obj.png/revision/latest?cb=20210518180128&path-prefix=fr"},
+  {id:33,name:"Lame du Roi Déchu",slot:"weapon2",rarity:"legendary",price:1,currency:"gold",bonus:"+15% XP global",img:"https://leagueofitems.com/images/items/256/3153.webp"},
+  {id:34,name:"Lame d'Infinie",slot:"weapon1",rarity:"transcendent",price:5,currency:"gold",bonus:"+30% XP Force",img:"https://leagueofitems.com/images/items/256/3031.webp"},
+  {id:35,name:"Excalibur Légendaire",slot:"weapon2",rarity:"transcendent",price:5,currency:"gold",bonus:"+25% XP global",img:"https://static.wikia.nocookie.net/leagueoflegends/images/f/f5/Brillance_Obj.png/revision/latest?cb=20210518185651&path-prefix=fr"},
+  // PIEDS
+  {id:36,name:"Bottes",slot:"feet",rarity:"common",price:500,currency:"bronze",bonus:"+5% Bronze gagné",img:"https://wiki.leagueoflegends.com/en-us/images/Boots_of_Speed_WR_item.png?15e7e"},
+  {id:37,name:"Lucidité Pourpre",slot:"feet",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Intelligence",img:"https://gamewave.fr/static/images/medias/upload/Amandine - Oct-Nov-2024/lucidite-pourpre.webp"},
+  {id:38,name:"Célérité Martiale",slot:"feet",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Force",img:"https://gamewave.fr/static/images/medias/upload/Amandine - Oct-Nov-2024/celerite-martiale.webp"},
+  {id:39,name:"Jambières de Métal",slot:"feet",rarity:"epic",price:50,currency:"silver",bonus:"+10% XP Vitalité",img:"https://gamewave.fr/static/images/medias/upload/Amandine - Oct-Nov-2024/jambieres-de-metal.webp"},
+  {id:40,name:"Chaussures de Lanceur",slot:"feet",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Mental",img:"https://gamewave.fr/static/images/medias/upload/Amandine - Oct-Nov-2024/chaussure-lanceur-de-sorts.webp"},
+  {id:41,name:"Avancée Blindée",slot:"feet",rarity:"legendary",price:1,currency:"gold",bonus:"+15% XP Discipline",img:"https://gamewave.fr/static/images/medias/upload/Amandine - Oct-Nov-2024/avance-blindee.webp"},
+  {id:42,name:"Voie Immortelle",slot:"feet",rarity:"legendary",price:1,currency:"gold",bonus:"+15% XP global",img:"https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/9b1ba3fbc73a4aadea8c057f78f00fa82d3820ba-512x512.png"},
+  {id:43,name:"Broyeuses à Chaînes",slot:"feet",rarity:"transcendent",price:5,currency:"gold",bonus:"+30% Bronze gagné",img:"https://gamewave.fr/static/images/medias/upload/Amandine - Oct-Nov-2024/broyeuse-a-chaines.webp"},
+  // CAPES
+  {id:44,name:"Cape Lati",slot:"cape",rarity:"epic",price:50,currency:"silver",bonus:"+10% XP global",img:"https://static.ankama.com/dofus-touch/www/game/items/200/17269.png"},
+  {id:45,name:"Cape du Sinistrofu",slot:"cape",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Mental",img:"https://static.ankama.com/dofus-touch/www/game/items/200/17268.png"},
+  {id:46,name:"Capchalot",slot:"cape",rarity:"epic",price:50,currency:"silver",bonus:"+10% XP Vitalité",img:"https://static.ankama.com/dofus-touch/www/game/items/200/171113.png"},
+  {id:47,name:"Cape du Roas'Inge",slot:"cape",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Force",img:"https://static.ankama.com/dofus-touch/www/game/items/200/171258.png"},
+  {id:48,name:"Cape Indescriptible",slot:"cape",rarity:"epic",price:50,currency:"silver",bonus:"+15% Bronze gagné",img:"https://static.ankama.com/dofus-touch/www/game/items/200/171110.png"},
+  {id:49,name:"Cape de Nileza",slot:"cape",rarity:"legendary",price:1,currency:"gold",bonus:"+15% XP Discipline",img:"https://static.ankama.com/dofus-touch/www/game/items/200/17265.png"},
+  {id:50,name:"Voile d'Encre",slot:"cape",rarity:"legendary",price:1,currency:"gold",bonus:"+15% XP Intelligence",img:"https://static.ankama.com/dofus-touch/www/game/items/200/17147.png"},
+  {id:51,name:"Cape du Meulou",slot:"cape",rarity:"legendary",price:1,currency:"gold",bonus:"+12% XP global",img:"https://static.ankama.com/dofus-touch/www/game/items/200/17110.png"},
+  {id:52,name:"Cape du Troololens",slot:"cape",rarity:"legendary",price:1,currency:"gold",bonus:"+18% XP Mental",img:"https://static.ankama.com/dofus-touch/www/game/items/200/172427.png"},
+  {id:53,name:"Cape Oflère",slot:"cape",rarity:"transcendent",price:5,currency:"gold",bonus:"+25% XP global",img:"https://static.ankama.com/dofus-touch/www/game/items/200/170727.png"},
+  // AMULETTES
+  {id:54,name:"Amulette Ementaire",slot:"amulet",rarity:"common",price:500,currency:"bronze",bonus:"+5% XP global",img:"https://static.ankama.com/dofus-touch/www/game/items/200/1167.png"},
+  {id:55,name:"Amulette Royale du Bouftou",slot:"amulet",rarity:"common",price:500,currency:"bronze",bonus:"+5% Bronze gagné",img:"https://static.ankama.com/dofus-touch/www/game/items/200/1050.png"},
+  {id:56,name:"Amulette Séculaire",slot:"amulet",rarity:"epic",price:50,currency:"silver",bonus:"+10% XP Intelligence",img:"https://static.ankama.com/dofus-touch/www/game/items/200/1230.png"},
+  {id:57,name:"Amulette Cryochrone",slot:"amulet",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Mental",img:"https://static.ankama.com/dofus-touch/www/game/items/200/1233.png"},
+  {id:58,name:"Amulette de l'Indicible",slot:"amulet",rarity:"epic",price:50,currency:"silver",bonus:"+15% XP Discipline",img:"https://static.ankama.com/dofus-touch/www/game/items/200/171128.png"},
+  {id:59,name:"Amulette de Wulan",slot:"amulet",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Force",img:"https://static.ankama.com/dofus-touch/www/game/items/200/172134.png"},
+  {id:60,name:"Amulette de Nileza",slot:"amulet",rarity:"legendary",price:1,currency:"gold",bonus:"+15% XP Vitalité",img:"https://static.ankama.com/dofus-touch/www/game/items/200/1228.png"},
+  {id:61,name:"Amulette de la Crowneille",slot:"amulet",rarity:"legendary",price:1,currency:"gold",bonus:"+15% XP global",img:"https://static.ankama.com/dofus-touch/www/game/items/200/171002.png"},
+  {id:62,name:"Amulette du Glourséleste",slot:"amulet",rarity:"legendary",price:1,currency:"gold",bonus:"+20% Bronze gagné",img:"https://static.ankama.com/dofus-touch/www/game/items/200/1181.png"},
+  {id:63,name:"Amulette Rinne",slot:"amulet",rarity:"transcendent",price:5,currency:"gold",bonus:"+25% XP global",img:"https://static.ankama.com/dofus-touch/www/game/items/200/172140.png"},
+  // ANNEAUX
+  {id:64,name:"Anobra",slot:"ring1",rarity:"common",price:500,currency:"bronze",bonus:"+5% XP Force",img:"https://static.ankama.com/dofus-touch/www/game/items/200/9045.png"},
+  {id:65,name:"Goulano",slot:"ring1",rarity:"common",price:500,currency:"bronze",bonus:"+5% Bronze gagné",img:"https://static.ankama.com/dofus-touch/www/game/items/200/170313.png"},
+  {id:66,name:"Anneau Tissé",slot:"ring1",rarity:"common",price:500,currency:"bronze",bonus:"+5% XP Mental",img:"https://static.ankama.com/dofus-touch/www/game/items/200/172680.png"},
+  {id:67,name:"Anneau du Bouftou",slot:"ring1",rarity:"epic",price:50,currency:"silver",bonus:"+8% XP global",img:"https://static.ankama.com/dofus-touch/www/game/items/200/9044.png"},
+  {id:68,name:"Anneau du Champ Champ",slot:"ring1",rarity:"epic",price:50,currency:"silver",bonus:"+10% XP Force",img:"https://static.ankama.com/dofus-touch/www/game/items/200/9074.png"},
+  {id:69,name:"Anneau Cryochrone",slot:"ring1",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Vitalité",img:"https://static.ankama.com/dofus-touch/www/game/items/200/9271.png"},
+  {id:70,name:"Alliance du Bandit Spectral",slot:"ring2",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Discipline",img:"https://static.ankama.com/dofus-touch/www/game/items/200/170865.png"},
+  {id:71,name:"Frimanneau",slot:"ring2",rarity:"epic",price:50,currency:"silver",bonus:"+10% XP Mental",img:"https://static.ankama.com/dofus-touch/www/game/items/200/9192.png"},
+  {id:72,name:"Alliance de Missiz Frizz",slot:"ring2",rarity:"epic",price:50,currency:"silver",bonus:"+12% XP Intelligence",img:"https://static.ankama.com/dofus-touch/www/game/items/200/9267.png"},
+  {id:73,name:"Anneau du Dragon Cochon",slot:"ring1",rarity:"legendary",price:1,currency:"gold",bonus:"+15% XP Discipline",img:"https://static.ankama.com/dofus-touch/www/game/items/200/9115.png"},
+  {id:74,name:"Gelano",slot:"ring2",rarity:"legendary",price:1,currency:"gold",bonus:"+15% XP Intelligence",img:"https://static.ankama.com/dofus-touch/www/game/items/200/9047.png"},
+  {id:75,name:"Anneau du Meulou",slot:"ring2",rarity:"legendary",price:1,currency:"gold",bonus:"+20% Bronze gagné",img:"https://static.ankama.com/dofus-touch/www/game/items/200/9113.png"},
+  {id:76,name:"Anneau du Comte Harebourg",slot:"ring1",rarity:"legendary",price:1,currency:"gold",bonus:"+15% XP global",img:"https://static.ankama.com/dofus-touch/www/game/items/200/9270.png"},
+  {id:77,name:"Anneau de l'Arakne Céleste",slot:"ring1",rarity:"transcendent",price:5,currency:"gold",bonus:"+25% XP global",img:"https://static.ankama.com/dofus-touch/www/game/items/200/170004.png"},
+  {id:78,name:"Anneau Glacial",slot:"ring2",rarity:"transcendent",price:5,currency:"gold",bonus:"+25% XP Force",img:"https://static.ankama.com/dofus-touch/www/game/items/200/9266.png"},
+];
+
+const RARITY_LABELS={common:"Commun",rare:"Rare",epic:"Épique",legendary:"Légendaire",transcendent:"Transcendant"};
+const RARITY_COLORS={common:"var(--common)",rare:"var(--rare)",epic:"var(--epic)",legendary:"var(--legendary)",transcendent:"var(--transcendent)"};
+
+const SLOT_TABS=[
+  {id:"all",label:"Tout"},
+  {id:"head",label:"Tête"},
+  {id:"body",label:"Corps"},
+  {id:"weapon1",label:"Arme 1"},
+  {id:"weapon2",label:"Arme 2"},
+  {id:"feet",label:"Pieds"},
+  {id:"cape",label:"Cape"},
+  {id:"amulet",label:"Amulette"},
+  {id:"ring1",label:"Anneau 1"},
+  {id:"ring2",label:"Anneau 2"},
+];
+
+let currentTab="all";
+
+function loadBronze(){return parseInt(localStorage.getItem('total_bronze')||'0');}
+function saveBronze(b){localStorage.setItem('total_bronze',Math.max(0,b));}
+function loadOwned(){try{const d=localStorage.getItem('owned_items');return d?new Set(JSON.parse(d)):new Set();}catch(e){return new Set();}}
+function saveOwned(s){localStorage.setItem('owned_items',JSON.stringify([...s]));}
+function loadEquipped(){try{const d=localStorage.getItem('equipped_items');return d?JSON.parse(d):{};}catch(e){return {};}}
+function saveEquipped(e){localStorage.setItem('equipped_items',JSON.stringify(e));}
+
+function getPrice(item){
+  if(item.currency==='bronze')return item.price;
+  if(item.currency==='silver')return item.price*100;
+  if(item.currency==='gold')return item.price*10000;
+  return item.price;
+}
+
+function formatPrice(item){
+  if(item.currency==='bronze')return`<span style="color:var(--bronze)">${item.price} 🟤</span>`;
+  if(item.currency==='silver')return`<span style="color:var(--silver)">${item.price} Argent</span>`;
+  if(item.currency==='gold')return`<span style="color:var(--gold)">${item.price} Or</span>`;
+  return item.price;
+}
+
+function showToast(msg,color='var(--blue-light)'){
+  const t=document.createElement('div');
+  t.className='toast';
+  t.style.color=color;
+  t.textContent=msg;
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),2400);
+}
+
+function buyItem(id){
+  const item=ITEMS.find(x=>x.id===id);
+  if(!item)return;
+  const owned=loadOwned();
+  if(owned.has(id)){equipItem(id);return;}
+  const cost=getPrice(item);
+  const bronze=loadBronze();
+  if(bronze<cost){showToast('Pas assez de Bronze !','var(--red-light)');return;}
+  saveBronze(bronze-cost);
+  owned.add(id);
+  saveOwned(owned);
+  equipItem(id);
+  showToast('✓ '+item.name+' acheté et équipé !','var(--gold)');
+  render();
+}
+
+function equipItem(id){
+  const item=ITEMS.find(x=>x.id===id);
+  if(!item)return;
+  const owned=loadOwned();
+  if(!owned.has(id))return;
+  const equipped=loadEquipped();
+  if(equipped[item.slot]===id){return;}
+  equipped[item.slot]=id;
+  saveEquipped(equipped);
+  showToast('⚔ '+item.name+' équipé','var(--blue-light)');
+  render();
+}
+
+function unequipSlot(slot){
+  const equipped=loadEquipped();
+  delete equipped[slot];
+  saveEquipped(equipped);
+  render();
+}
+
+function renderCurrency(){
+  const bronze=loadBronze();
+  const or=Math.floor(bronze/10000);
+  const argent=Math.floor((bronze%10000)/100);
+  const bronzeRest=bronze%100;
+  document.getElementById('currency-bar').innerHTML=`
+    <div class="cur-item"><div class="cur-dot" style="background:var(--bronze)"></div><div><div class="cur-val" style="color:var(--bronze)">${bronzeRest}</div><div class="cur-label">Bronze</div></div></div>
+    <div class="cur-item"><div class="cur-dot" style="background:var(--silver)"></div><div><div class="cur-val" style="color:var(--silver)">${argent}</div><div class="cur-label">Argent</div></div></div>
+    <div class="cur-item"><div class="cur-dot" style="background:var(--gold)"></div><div><div class="cur-val" style="color:var(--gold)">${or}</div><div class="cur-label">Or</div></div></div>
+    <div class="cur-item"><div><div class="cur-val" style="color:var(--text2)">${bronze}</div><div class="cur-label">Total Bronze</div></div></div>
+  `;
+}
+
+function renderSlots(){
+  const equipped=loadEquipped();
+  const grid=document.getElementById('slots-grid');
+  grid.innerHTML='';
+  SLOTS.forEach(s=>{
+    const equippedId=equipped[s.id];
+    const item=equippedId?ITEMS.find(x=>x.id===equippedId):null;
+    const div=document.createElement('div');
+    div.className='slot'+(item?' equipped':'');
+    if(item){
+      div.innerHTML=`
+        <button class="unequip-btn" onclick="event.stopPropagation();unequipSlot('${s.id}')">✕</button>
+        <img src="${item.img}" style="width:36px;height:36px;object-fit:contain" onerror="this.style.display='none'">
+        <div class="slot-item-name">${item.name}</div>
+        <div class="slot-bonus">${item.bonus}</div>
+      `;
+    } else {
+      div.innerHTML=`<div class="slot-icon">${s.icon}</div><div class="slot-name">${s.name}</div><div style="font-size:9px;color:var(--border-active)">Vide</div>`;
+    }
+    div.onclick=()=>{if(!item){currentTab=s.id;renderTabs();renderItems();}};
+    grid.appendChild(div);
+  });
+}
+
+function renderTabs(){
+  const tabs=document.getElementById('tabs');
+  tabs.innerHTML='';
+  SLOT_TABS.forEach(t=>{
+    const btn=document.createElement('button');
+    btn.className='tab'+(currentTab===t.id?' active':'');
+    btn.textContent=t.label;
+    btn.onclick=()=>{currentTab=t.id;renderTabs();renderItems();};
+    tabs.appendChild(btn);
+  });
+}
+
+function renderItems(){
+  const owned=loadOwned();
+  const equipped=loadEquipped();
+  const list=currentTab==='all'?ITEMS:ITEMS.filter(x=>x.slot===currentTab);
+  const grid=document.getElementById('items-grid');
+  grid.innerHTML='';
+  list.forEach(item=>{
+    const isOwned=owned.has(item.id);
+    const isEquipped=Object.values(equipped).includes(item.id);
+    const card=document.createElement('div');
+    card.className=`item-card rarity-${item.rarity}`+(isEquipped?' equipped-item':'');
+    let btnText=isEquipped?'Équipé':isOwned?'Équiper':'Acheter';
+    let btnClass=isEquipped?'equipped-btn':isOwned?'owned-btn':'';
+    card.innerHTML=`
+      <img class="item-img" src="${item.img}" alt="${item.name}" onerror="this.style.opacity='0.2'">
+      <div class="item-name" style="color:${RARITY_COLORS[item.rarity]}">${item.name}</div>
+      <div class="item-bonus">${item.bonus}</div>
+      <div class="item-price">${formatPrice(item)}</div>
+      <div class="item-rarity" style="color:${RARITY_COLORS[item.rarity]}">${RARITY_LABELS[item.rarity]}</div>
+      <button class="buy-btn ${btnClass}" onclick="buyItem(${item.id})">${btnText}</button>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function render(){
+  renderCurrency();
+  renderSlots();
+  renderTabs();
+  renderItems();
+}
+
+render();
+</script>
+</body>
+</html>
